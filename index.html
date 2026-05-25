@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano 2°G · IMV 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:#f0ece4;color:#1a1a1a;font-size:13px}
+
+.topbar{background:#0d1b2a;color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topbar-left h1{font-size:14px;font-weight:600}
+.topbar-left p{font-size:10px;opacity:.45;letter-spacing:.5px;margin-top:2px;font-family:'IBM Plex Mono',monospace}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:6px 14px;border-radius:5px;font-size:11px;cursor:pointer;border:1px solid;font-family:'IBM Plex Sans',sans-serif;transition:background .15s}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
+.btn-ghost:hover{background:rgba(255,255,255,.18)}
+.btn-ghost:disabled{opacity:.35;cursor:default}
+.btn-gold{background:#c9a84c;color:#0d1b2a;border-color:#c9a84c;font-weight:600}
+.btn-gold:hover{background:#e8c97e}
+.btn-danger{background:rgba(220,80,80,.15);color:#f5b7b1;border-color:rgba(220,80,80,.3)}
+.btn-danger:hover{background:rgba(220,80,80,.3)}
+
+.main{max-width:800px;margin:0 auto;padding:16px}
+
+.info-bar{background:#fff8ec;border:1px solid #e8c97e;border-radius:6px;padding:8px 14px;margin-bottom:14px;font-size:11px;color:#633806;display:flex;align-items:center;gap:8px}
+
+.board{height:9px;background:linear-gradient(90deg,#2d6a30,#3a7d3e 50%,#2d6a30);border-radius:3px;margin-bottom:6px}
+.teacher-wrap{text-align:center;margin-bottom:16px}
+.teacher-desk{display:inline-block;background:#0d1b2a;color:#c9a84c;padding:7px 40px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+
+.col-headers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:5px;padding:0 2px}
+.col-hdr{text-align:center;font-size:9px;color:#aaa;letter-spacing:1px;text-transform:uppercase;font-family:'IBM Plex Mono',monospace}
+
+.classroom{}
+
+.block{background:#fff;border:1px solid #d9d4c8;border-radius:8px;padding:10px;position:relative}
+.block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.block-label{font-size:9px;color:#aaa;letter-spacing:1.5px;text-transform:uppercase;font-family:'IBM Plex Mono',monospace}
+.block-count{font-size:9px;color:#aaa;font-family:'IBM Plex Mono',monospace}
+.block.alone{border:2px solid #534AB7;background:rgba(238,237,254,.12)}
+.block.alone .block-label{color:#534AB7;font-weight:600}
+.block.alone .block-count{color:#7F77DD}
+
+.aisle-gap{display:flex;align-items:center;gap:8px;padding:8px 0}
+.aisle-line{flex:1;border-top:1.5px dashed #ccc}
+.aisle-text{font-size:10px;color:#c0b89a;font-family:'IBM Plex Mono',monospace;white-space:nowrap;letter-spacing:.5px}
+
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+.row:last-child{margin-bottom:0}
+
+.seat{min-height:78px;border-radius:7px;border:1.5px solid;padding:8px 8px 6px;position:relative;transition:transform .12s,box-shadow .12s,opacity .12s}
+.seat[draggable="true"]{cursor:grab}
+.seat[draggable="true"]:active{cursor:grabbing}
+.seat.is-dragging{opacity:.25;transform:scale(.95)}
+.seat.drag-over{box-shadow:0 0 0 3px #c9a84c;transform:translateY(-2px)}
+.seat.empty{background:#f7f4ef;border:1.5px dashed #c8c0b0;cursor:default;min-height:78px}
+
+.critico {background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.riesgo  {background:#FAEEDA;border-color:#854F0B;color:#633806}
+.monitor {background:#F1EFE8;border-color:#5F5E5A;color:#444441}
+.ancla   {background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.excelente{background:#E1F5EE;border-color:#0F6E56;color:#085041}
+.par     {background:#EEEDFE;border-color:#534AB7;color:#3C3489;border-width:2px}
+
+.s-fn{font-size:12px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-ln{font-size:10px;opacity:.6;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-meta{display:flex;gap:6px;margin-top:5px;align-items:center;flex-wrap:wrap}
+.s-p1{font-size:11px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.s-stat{font-size:10px;opacity:.8}
+.s-par-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:#534AB7;color:#EEEDFE;font-size:8px;padding:2px 8px;border-radius:3px;white-space:nowrap;font-weight:600;letter-spacing:.5px;z-index:1}
+
+.legend{background:#fff;border:1px solid #d9d4c8;border-radius:8px;padding:10px 14px;margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:#666}
+.leg-swatch{width:11px;height:11px;border-radius:3px;border:1.5px solid;flex-shrink:0}
+.leg-key{margin-left:auto;font-size:10px;color:#999;font-family:'IBM Plex Mono',monospace}
+
+.reset-confirm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
+.reset-confirm.show{display:flex}
+.reset-box{background:#fff;border-radius:10px;padding:24px 28px;max-width:340px;text-align:center}
+.reset-box h3{font-size:15px;margin-bottom:8px}
+.reset-box p{font-size:12px;color:#666;margin-bottom:16px;line-height:1.5}
+.reset-box-btns{display:flex;gap:8px;justify-content:center}
+.reset-box-btns button{padding:7px 18px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid}
+
+@media print{
+  .topbar-actions,.info-bar,.reset-confirm{display:none!important}
+  body{background:#fff}
+  .seat.is-dragging,.seat.drag-over{transform:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <h1>Plano de Ubicación — 2° Año "G" · 2026</h1>
+    <p>INSTITUTO MARÍTIMO DE VALPARAÍSO · MAYO 2026 · 26 ESTUDIANTES · LAYOUT 2-2-2-1</p>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" id="btn-undo" onclick="undo()" disabled>&#8630; Deshacer</button>
+    <button class="btn btn-danger" onclick="showReset()">&#8635; Restaurar</button>
+    <button class="btn btn-gold" onclick="window.print()">&#128438; Imprimir</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="info-bar">
+    &#9432;&nbsp;<strong>Modo edición activo:</strong> arrastra cualquier tarjeta a otro puesto para intercambiar posiciones. Usa "Deshacer" si necesitas revertir el último movimiento.
+  </div>
+
+  <div class="teacher-wrap">
+    <div class="board"></div>
+    <div class="teacher-desk">&#9632;&nbsp; Docente &nbsp;·&nbsp; Pizarrón &nbsp;&#9632;</div>
+  </div>
+
+  <div class="col-headers">
+    <div class="col-hdr">Col. A</div>
+    <div class="col-hdr">Col. B</div>
+    <div class="col-hdr">Col. C</div>
+    <div class="col-hdr">Col. D</div>
+  </div>
+
+  <div class="classroom" id="classroom"></div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-swatch" style="background:#FCEBEB;border-color:#A32D2D"></div>Riesgo crítico</div>
+    <div class="leg"><div class="leg-swatch" style="background:#FAEEDA;border-color:#854F0B"></div>En seguimiento</div>
+    <div class="leg"><div class="leg-swatch" style="background:#F1EFE8;border-color:#5F5E5A"></div>Monitorear</div>
+    <div class="leg"><div class="leg-swatch" style="background:#EAF3DE;border-color:#3B6D11"></div>Referente</div>
+    <div class="leg"><div class="leg-swatch" style="background:#E1F5EE;border-color:#0F6E56"></div>Destacado</div>
+    <div class="leg"><div class="leg-swatch" style="background:#EEEDFE;border-color:#534AB7"></div>Par asignado</div>
+    <div class="leg-key">&#9201;&nbsp;atrasos &nbsp;&#8854;&nbsp;neg. &nbsp;&#8853;&nbsp;pos.</div>
+  </div>
+</div>
+
+<!-- Reset confirmation modal -->
+<div class="reset-confirm" id="reset-modal">
+  <div class="reset-box">
+    <h3>¿Restaurar disposición?</h3>
+    <p>Esto devolverá todos los estudiantes a la ubicación inicial estratégica y borrará el historial de cambios.</p>
+    <div class="reset-box-btns">
+      <button style="background:#fff;border-color:#ccc;color:#333" onclick="hideReset()">Cancelar</button>
+      <button style="background:#c0392b;color:#fff;border-color:#c0392b;font-weight:600" onclick="resetGrid()">Restaurar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STUDENTS = [
+  {id:'boscan',    fn:'Harri',       ln:'Boscan',      nv:'critico',  p1:'3.5',at:11,ng:3},
+  {id:'ramos',     fn:'Francisco',   ln:'Ramos C.',    nv:'excelente',p1:'6.8',at:0, po:2},
+  {id:'matus',     fn:'Lucas',       ln:'Matus',       nv:'critico',  p1:'4.0',at:2, ng:4},
+  {id:'cariaga',   fn:'Alonso',      ln:'Cariaga',     nv:'excelente',p1:'6.7',at:0, po:2},
+  {id:'floresr',   fn:'Joaquín',     ln:'Flores R.',   nv:'critico',  p1:'4.4',at:11,ng:6},
+  {id:'guerra',    fn:'Benjamín',    ln:'Guerra',      nv:'excelente',p1:'6.9',at:0, po:3},
+  {id:'opazo',     fn:'Yaslyn',      ln:'Opazo',       nv:'critico',  p1:'4.6',at:18,ng:4},
+  {id:'gutierrez', fn:'Monserrat',   ln:'Gutiérrez',   nv:'ancla',    p1:'6.1',at:1, po:2},
+  {id:'martinez',  fn:'Juan Pedro',  ln:'Martínez',    nv:'riesgo',   p1:'4.6',at:0, ng:1},
+  {id:'ramirez',   fn:'Javier',      ln:'Ramírez',     nv:'ancla',    p1:'5.5',at:0},
+  {id:'mena',      fn:'Laura',       ln:'Mena',        nv:'riesgo',   p1:'4.7',at:8, ng:6},
+  {id:'contreras', fn:'Pedro',       ln:'Contreras',   nv:'ancla',    p1:'5.8',at:4},
+  {id:'avila',     fn:'Abigail',     ln:'Ávila',       nv:'par',      p1:'5.1',at:19,ng:5,ep:true},
+  {id:'oliva',     fn:'Amylee',      ln:'Oliva',       nv:'par',      p1:'6.2',at:0, po:1,ep:true},
+  {id:'torres',    fn:'Martina',     ln:'Torres',      nv:'riesgo',   p1:'5.4',at:16,ng:9},
+  {id:'silva',     fn:'Joshua',      ln:'Silva',       nv:'ancla',    p1:'5.9',at:2, po:1},
+  {id:'perez',     fn:'Zahira',      ln:'Pérez',       nv:'riesgo',   p1:'5.1',at:17,ng:4},
+  {id:'soza',      fn:'Dylan',       ln:'Soza',        nv:'ancla',    p1:'6.4',at:2, po:2},
+  {id:'catalan',   fn:'Ulises',      ln:'Catalán',     nv:'riesgo',   p1:'4.9',at:6, ng:2},
+  {id:'floresp',   fn:'Ángela',      ln:'Flores P.',   nv:'monitor',  p1:'5.2',at:5, ng:1},
+  {id:'leyton',    fn:'Danae',       ln:'Leyton',      nv:'riesgo',   p1:'5.7',at:18,ng:1},
+  {id:'bazaes',    fn:'Nicolás',     ln:'Bazaes',      nv:'monitor',  p1:'5.0',at:0},
+  {id:'sanmartin', fn:'Vicente',     ln:'San Martín',  nv:'monitor',  p1:'5.1',at:0, ng:2},
+  {id:'restrepo',  fn:'Colin',       ln:'Restrepo',    nv:'monitor',  p1:'5.1',at:2, ng:2},
+  {id:'bucher',    fn:'Maximiliano', ln:'Bucher',      nv:'monitor',  p1:'5.5',at:2, ng:3},
+  {id:'cardenas',  fn:'Raquel',      ln:'Cárdenas',    nv:'monitor',  p1:'5.7',at:9, ng:1},
+];
+
+const INITIAL_GRID = [
+  ['boscan','ramos','matus','cariaga'],
+  ['floresr','guerra','opazo','gutierrez'],
+  ['martinez','ramirez','mena','contreras'],
+  ['avila','oliva','torres','silva'],
+  ['perez','soza','catalan','floresp'],
+  ['leyton','bazaes','sanmartin','restrepo'],
+  ['bucher','cardenas',null,null],
+];
+
+const BLOCKS = [
+  {rows:[0,1], label:'Bloque A · Frente',        alone:false},
+  {rows:[2,3], label:'Bloque B',                  alone:false},
+  {rows:[4,5], label:'Bloque C',                  alone:false},
+  {rows:[6],   label:'Bloque D · Solo',           alone:true},
+];
+
+const byId = {};
+STUDENTS.forEach(s => byId[s.id] = s);
+
+let grid = INITIAL_GRID.map(r => [...r]);
+let hist = [];
+let dragSrc = null;
+
+// ── helpers ───────────────────────────────────────────────────────────────
+function countBlock(rows) {
+  let n = 0;
+  rows.forEach(r => grid[r].forEach(id => { if (id) n++; }));
+  return n;
+}
+
+function cell(r, c) {
+  return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+}
+
+// ── render a single seat ──────────────────────────────────────────────────
+function renderSeat(r, c) {
+  const el = cell(r, c);
+  if (!el) return;
+  const id = grid[r][c];
+  const s = id ? byId[id] : null;
+  if (!s) {
+    el.className = 'seat empty';
+    el.draggable = false;
+    el.innerHTML = '';
+    return;
+  }
+  let meta = `<span class="s-p1">${s.p1}</span>`;
+  if (s.at > 0) meta += `<span class="s-stat">&#9201;${s.at}</span>`;
+  if (s.ng > 0) meta += `<span class="s-stat">&#8854;${s.ng}</span>`;
+  if (s.po > 0) meta += `<span class="s-stat">&#8853;${s.po}</span>`;
+  el.className = `seat ${s.nv}`;
+  el.draggable = true;
+  el.innerHTML = `${s.ep ? '<div class="s-par-badge">Par asignado</div>' : ''}
+    <div class="s-fn">${s.fn}</div>
+    <div class="s-ln">${s.ln}</div>
+    <div class="s-meta">${meta}</div>`;
+}
+
+function renderAll() {
+  for (let r = 0; r < 7; r++)
+    for (let c = 0; c < 4; c++)
+      renderSeat(r, c);
+  updateBlockCounts();
+  document.getElementById('btn-undo').disabled = hist.length === 0;
+}
+
+function updateBlockCounts() {
+  BLOCKS.forEach((b, bi) => {
+    const el = document.getElementById(`bcount-${bi}`);
+    if (el) el.textContent = `${countBlock(b.rows)} estudiantes`;
+  });
+}
+
+// ── drag handlers ─────────────────────────────────────────────────────────
+function onDragStart(e, r, c) {
+  if (!grid[r][c]) { e.preventDefault(); return; }
+  dragSrc = {r, c};
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', `${r},${c}`);
+  setTimeout(() => {
+    const el = cell(r, c);
+    if (el) el.classList.add('is-dragging');
+  }, 0);
+}
+
+function onDragEnd() {
+  document.querySelectorAll('.is-dragging').forEach(e => e.classList.remove('is-dragging'));
+  document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'));
+  dragSrc = null;
+}
+
+function onDragOver(e, r, c) {
+  e.preventDefault();
+  if (dragSrc && !(dragSrc.r === r && dragSrc.c === c))
+    cell(r, c)?.classList.add('drag-over');
+}
+
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e, r, c) {
+  e.preventDefault();
+  cell(r, c)?.classList.remove('drag-over');
+  if (!dragSrc || (dragSrc.r === r && dragSrc.c === c)) return;
+  hist.push({ from:{r:dragSrc.r,c:dragSrc.c,id:grid[dragSrc.r][dragSrc.c]},
+               to:  {r, c, id:grid[r][c]} });
+  const tmp = grid[r][c];
+  grid[r][c] = grid[dragSrc.r][dragSrc.c];
+  grid[dragSrc.r][dragSrc.c] = tmp;
+  renderSeat(r, c);
+  renderSeat(dragSrc.r, dragSrc.c);
+  updateBlockCounts();
+  document.getElementById('btn-undo').disabled = false;
+  dragSrc = null;
+}
+
+// ── undo ──────────────────────────────────────────────────────────────────
+function undo() {
+  if (!hist.length) return;
+  const {from, to} = hist.pop();
+  grid[from.r][from.c] = from.id;
+  grid[to.r][to.c] = to.id;
+  renderSeat(from.r, from.c);
+  renderSeat(to.r, to.c);
+  updateBlockCounts();
+  document.getElementById('btn-undo').disabled = hist.length === 0;
+}
+
+// ── reset ─────────────────────────────────────────────────────────────────
+function showReset() { document.getElementById('reset-modal').classList.add('show'); }
+function hideReset() { document.getElementById('reset-modal').classList.remove('show'); }
+function resetGrid() {
+  grid = INITIAL_GRID.map(r => [...r]);
+  hist = [];
+  renderAll();
+  hideReset();
+}
+
+// ── build DOM once ────────────────────────────────────────────────────────
+function build() {
+  const cls = document.getElementById('classroom');
+  cls.innerHTML = '';
+
+  BLOCKS.forEach((block, bi) => {
+    if (bi > 0) {
+      const aisle = document.createElement('div');
+      aisle.className = 'aisle-gap';
+      aisle.innerHTML = `<div class="aisle-line"></div>
+        <div class="aisle-text">— pasillo ${bi} —</div>
+        <div class="aisle-line"></div>`;
+      cls.appendChild(aisle);
+    }
+
+    const blockEl = document.createElement('div');
+    blockEl.className = block.alone ? 'block alone' : 'block';
+    blockEl.innerHTML = `<div class="block-header">
+      <div class="block-label">${block.label}</div>
+      <div class="block-count" id="bcount-${bi}"></div>
+    </div>`;
+
+    block.rows.forEach(r => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'row';
+      for (let c = 0; c < 4; c++) {
+        const el = document.createElement('div');
+        el.dataset.r = r;
+        el.dataset.c = c;
+        el.addEventListener('dragstart', e => onDragStart(e, r, c));
+        el.addEventListener('dragend',   onDragEnd);
+        el.addEventListener('dragover',  e => onDragOver(e, r, c));
+        el.addEventListener('dragleave', onDragLeave);
+        el.addEventListener('drop',      e => onDrop(e, r, c));
+        rowEl.appendChild(el);
+      }
+      blockEl.appendChild(rowEl);
+    });
+
+    cls.appendChild(blockEl);
+  });
+
+  renderAll();
+}
+
+build();
+</script>
+</body>
+</html>
