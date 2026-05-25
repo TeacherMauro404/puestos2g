@@ -2,244 +2,260 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plano 2°G — IMV 2026</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#e8e4dd;color:#1a1a1a;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#dedad3;color:#111;}
 
-/* ── TABS ── */
-.tabbar{background:#0d1b2a;display:flex;align-items:center;padding:0 20px;gap:2px;}
-.tb-logo{color:#c9a84c;font-weight:700;font-size:12px;letter-spacing:.5px;margin-right:14px;}
-.tb{padding:12px 18px;font-size:12px;font-weight:500;border:none;cursor:pointer;
-    background:transparent;color:rgba(255,255,255,.45);border-bottom:3px solid transparent;transition:all .18s;}
+/* TABS */
+.tabbar{background:#0d1b2a;display:flex;align-items:center;padding:0 20px;gap:4px;}
+.tb-logo{color:#c9a84c;font-weight:700;font-size:13px;margin-right:16px;}
+.tb{padding:13px 20px;font-size:13px;font-weight:600;border:none;cursor:pointer;
+    background:transparent;color:rgba(255,255,255,.4);border-bottom:3px solid transparent;}
 .tb.on{color:#c9a84c;border-bottom-color:#c9a84c;}
-.tb:hover:not(.on){color:rgba(255,255,255,.8);}
+.tb:hover:not(.on){color:rgba(255,255,255,.75);}
 .panel{display:none;}
 .panel.on{display:block;}
 
-/* ── HEADER ── */
-.hdr{background:#0d1b2a;color:#fff;padding:13px 22px;display:flex;
-     justify-content:space-between;align-items:center;border-bottom:3px solid #c9a84c;}
-.hdr h1{font-size:16px;font-weight:600;}
-.hdr-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;font-family:monospace;}
+/* HEADER */
+.hdr{background:#0d1b2a;color:#fff;padding:14px 24px;display:flex;
+     justify-content:space-between;align-items:center;border-bottom:4px solid #c9a84c;}
+.hdr h1{font-size:17px;font-weight:700;}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:monospace;}
 .hdr-r{font-size:10px;color:#c9a84c;font-family:monospace;text-align:right;line-height:1.7;}
 
-/* ── CONTROLS ── */
-.ctrl{padding:11px 22px 0;display:flex;align-items:center;gap:10px;}
-.btn{padding:7px 16px;border-radius:6px;border:1px solid #bbb;background:#fff;
-     cursor:pointer;font-size:12px;font-weight:500;transition:all .14s;}
-.btn:hover{background:#dedad3;}
+/* CONTROLS */
+.ctrl{padding:12px 24px 0;display:flex;align-items:center;gap:12px;}
+.btn{padding:8px 18px;border-radius:6px;border:1.5px solid #bbb;background:#fff;
+     cursor:pointer;font-size:12px;font-weight:600;}
+.btn:hover{background:#e0dbd3;}
 .btn-p{background:#0d1b2a;color:#c9a84c;border-color:#0d1b2a;}
 .btn-p:hover{background:#1a2e45;}
 .hint{font-size:11px;color:#888;}
 
-/* ── CLASSROOM OUTER ── */
-.cwrap{padding:16px 22px 10px;}
+/* CLASSROOM OUTER — scrollable si la pantalla es estrecha */
+.cwrap{padding:18px 24px 10px;overflow-x:auto;}
+.classroom{min-width:900px;}
 
-/* ── SHARED ROW STRUCTURE ──
-   Every row (furn / col-hdr / seat) uses the same flex skeleton:
-   rnum | FILA3-block | PASILLO | FILA2-block | PASILLO | FILA1-block | PASILLO-ANCHO | IND-block
-──────────────────────────────── */
-.room-row{display:flex;align-items:stretch;margin-bottom:10px;}
+/* ── SHARED ROW ──
+   Cada fila usa display:flex con estas piezas:
+   [rnum] [MESA-F3] [PASILLO] [MESA-F2] [PASILLO] [MESA-F1] [PASILLO-ANCHO] [IND]
+   Cada MESA contiene 2 tarjetas apiladas (flex-direction:column)
+*/
+.room-row{display:flex;align-items:stretch;margin-bottom:12px;gap:0;}
 
-/* Row number */
 .rnum{
-  flex:0 0 26px;display:flex;align-items:center;justify-content:flex-end;
-  font-size:9px;color:#aaa;font-family:monospace;padding-right:6px;
+  flex:0 0 28px;display:flex;align-items:center;justify-content:flex-end;
+  font-size:10px;color:#aaa;font-family:monospace;padding-right:6px;
 }
 
-/* ── PAIR BLOCK (Mesa doble: 2 alumnos apilados) ── */
-.pair-block{
-  flex:2;display:flex;flex-direction:column;gap:5px;
-  padding:5px;
-  background:#f5f2ed;
-  border:1.5px solid #cdc6ba;
+/* Mesa doble: contiene 2 tarjetas apiladas */
+.mesa{
+  flex:2;
+  display:flex;flex-direction:column;gap:6px;
+  padding:6px;
+  background:#e8e3da;
+  border:2px solid #b8b0a4;
   border-radius:10px;
-  min-width:0;
+  min-width:160px;
 }
 
-/* ── INDIVIDUAL BLOCK ── */
-.ind-block{
-  flex:1.1;display:flex;flex-direction:column;gap:0;
-  min-width:0;
+/* Mesa individual */
+.mesa-ind{
+  flex:1.2;
+  display:flex;flex-direction:column;gap:0;
+  min-width:120px;
 }
 
-/* ── AISLES ── */
-.aisle{
-  flex:0 0 40px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;padding:4px 0;
+/* PASILLOS */
+.pasillo{
+  flex:0 0 46px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  background:#d4cfc7;border-radius:6px;margin:0 5px;
 }
-.aisle-line{
-  width:0;flex:1;max-height:100%;
-  border-left:2px dashed #bfb8ae;
-}
-.aisle-lbl{
-  font-size:7px;font-family:monospace;color:#c0b8ae;
-  text-transform:uppercase;letter-spacing:.8px;
-  writing-mode:vertical-lr;transform:rotate(180deg);
-}
+.pasillo-line{width:2px;flex:1;max-height:60%;background:repeating-linear-gradient(
+  to bottom,#b8b0a4 0px,#b8b0a4 6px,transparent 6px,transparent 12px);}
+.pasillo-txt{font-size:7px;font-family:monospace;color:#a09890;text-transform:uppercase;
+  letter-spacing:1px;writing-mode:vertical-lr;transform:rotate(180deg);}
 
-.aisle-wide{
-  flex:0 0 58px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;padding:4px 0;
-  background:#dedad4;border-radius:7px;margin:0 4px;
+.pasillo-ancho{
+  flex:0 0 64px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  background:#c8c2b8;border-radius:8px;margin:0 6px;
 }
-.aisle-wide .aisle-line{border-left:3px solid #b0a89e;}
-.aisle-wide .aisle-lbl{color:#9e9890;font-weight:700;}
+.pasillo-ancho .pasillo-line{background:repeating-linear-gradient(
+  to bottom,#a09890 0px,#a09890 6px,transparent 6px,transparent 12px);}
+.pasillo-ancho .pasillo-txt{color:#807870;font-weight:700;}
 
-/* ── SEAT CARD ── */
+/* ── TARJETA DE PUESTO ── */
 .sc{
-  border:2px solid #ccc;border-radius:8px;
-  padding:10px 14px;
-  min-height:65px;
-  display:flex;flex-direction:column;justify-content:center;gap:3px;
+  border:2.5px solid #999;
+  border-radius:8px;
+  padding:12px 14px;
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:4px;
   position:relative;
-  transition:transform .12s,box-shadow .12s;
+  /* SIN overflow:hidden — el texto se ve completo */
+  word-wrap:break-word;
+  overflow-wrap:break-word;
 }
-.sc.occ{cursor:grab;}
+.sc.occ{cursor:grab;transition:transform .12s,box-shadow .12s;}
+.sc.occ:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
 .sc.occ:active{cursor:grabbing;}
-.sc.occ:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.16);}
 .sc.empty{
-  background:#f0ede8;border:2px dashed #ccc;
+  background:#f0ece6;border:2.5px dashed #bbb;
   display:flex;align-items:center;justify-content:center;
-  color:#ccc;font-size:11px;font-family:monospace;
-  min-height:65px;cursor:default;
+  color:#ccc;font-size:11px;font-family:monospace;cursor:default;min-height:78px;
 }
-.sc.drag-over{box-shadow:0 0 0 3px #3b82f6!important;border-color:#3b82f6!important;}
-.sc.dragging{opacity:.25;transform:scale(.97);}
+.sc.drag-over{box-shadow:0 0 0 4px #3b82f6!important;border-color:#3b82f6!important;}
+.sc.dragging{opacity:.2;}
 
-/* ── SEAT CONTENT ── */
-.sn{font-size:16px;font-weight:800;line-height:1.2;letter-spacing:-.2px;}
-.sl{font-size:11px;font-weight:500;opacity:.6;margin-top:1px;}
-.sm{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px;align-items:center;}
-.sp{font-size:12px;font-weight:700;font-family:monospace;}
+/* NOMBRE — GRANDE Y CLARO */
+.sn{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.25;
+  /* SIN white-space:nowrap ni overflow:hidden */
+}
+.sl{
+  font-size:11px;
+  font-weight:600;
+  opacity:.65;
+  line-height:1.3;
+}
+.sm{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.sp{font-size:12px;font-weight:800;font-family:monospace;}
 .ss{font-size:10px;opacity:.75;}
 .par-pin{
-  position:absolute;top:6px;right:8px;
+  position:absolute;top:5px;right:7px;
   font-size:8px;background:#534AB7;color:#fff;
   padding:2px 7px;border-radius:4px;font-weight:800;letter-spacing:.5px;
 }
 
-/* ── NIVEL COLORS ── */
-.nc{background:#FCEBEB;border-color:#c0392b;color:#7b1a1a;}
-.nr{background:#FAEEDA;border-color:#c0770a;color:#6b3c06;}
-.nm{background:#F1EFE8;border-color:#7d7b73;color:#3d3d3a;}
-.na{background:#EAF3DE;border-color:#3a6e10;color:#274e0a;}
-.ne{background:#E0F5EE;border-color:#0d7a5a;color:#084838;}
-.np{background:#EEEDFE;border-color:#534AB7;color:#3a3189;}
+/* COLORES DE NIVEL */
+.nc{background:#FCEBEB;border-color:#c0392b;color:#7a1515;}
+.nr{background:#FEF0D9;border-color:#d08010;color:#6b3d00;}
+.nm{background:#EEECEA;border-color:#888077;color:#3a3830;}
+.na{background:#E8F5DC;border-color:#3d7012;color:#234008;}
+.ne{background:#DCF5EC;border-color:#0c7a58;color:#054535;}
+.np{background:#EEEDFE;border-color:#534AB7;color:#2d2580;}
 
-/* ── FURNITURE ROW ── */
-.furn-row{display:flex;align-items:stretch;margin-bottom:7px;}
+/* FILA FRONTAL (pizarrón / docente) */
+.front-row{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
 .fbox{
-  border-radius:7px;padding:8px 14px;text-align:center;
-  font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  border-radius:8px;padding:9px 14px;text-align:center;
+  font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
   display:flex;align-items:center;justify-content:center;
 }
-.pizarra{background:#155017;color:#9ceda0;}
-.puesto{background:#142338;color:#c9a84c;border:2px solid #c9a84c;}
+.pizarra{background:#154718;color:#8eeea0;}
+.puesto{background:#122035;color:#c9a84c;border:2px solid #c9a84c;}
 
-/* ── COLUMN HEADER ROW ── */
-.hdr-row{display:flex;align-items:stretch;margin-bottom:5px;}
+/* CABECERA DE COLUMNAS */
+.col-hdr-row{display:flex;align-items:stretch;margin-bottom:6px;gap:0;}
 .col-lbl{
   flex:2;text-align:center;padding:5px 4px;
-  font-size:10px;font-weight:700;color:#555;
+  font-size:10px;font-weight:700;color:#444;
   text-transform:uppercase;letter-spacing:.5px;font-family:monospace;
-  background:#cdc6ba;border-radius:5px;
+  background:#c8c2b6;border-radius:5px;min-width:160px;
 }
-.col-lbl.ind{flex:1.1;}
+.col-lbl.ind{flex:1.2;min-width:120px;}
 
-/* ── LEGEND ── */
-.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 22px;
-        border-top:1px solid #d4c9b0;background:#fff;}
-.lg{display:flex;align-items:center;gap:5px;font-size:11px;color:#555;}
-.ld{width:13px;height:13px;border-radius:3px;border:2px solid;flex-shrink:0;}
+/* LEYENDA */
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 24px;
+        border-top:1px solid #c8c0b0;background:#fff;}
+.lg{display:flex;align-items:center;gap:6px;font-size:11px;color:#444;}
+.ld{width:14px;height:14px;border-radius:3px;border:2px solid;flex-shrink:0;}
 
-/* ══════════════════════════════════════
-   PRINT TAB
-══════════════════════════════════════ */
-.pctrl{padding:13px 22px 0;display:flex;align-items:center;gap:10px;}
-.pprev{padding:14px 22px;}
-.pg{background:#fff;border:1px solid #ccc;border-radius:8px;padding:20px;}
+/* ══════════════════════════════
+   PESTAÑA IMPRIMIR
+══════════════════════════════ */
+.pctrl{padding:14px 24px 0;display:flex;align-items:center;gap:12px;}
+.pprev{padding:16px 24px;overflow-x:auto;}
+.pg{background:#fff;border:1px solid #ccc;border-radius:8px;padding:22px;min-width:900px;}
 .ptitle{font-size:18px;font-weight:800;text-align:center;margin-bottom:3px;}
 .psub{font-size:10px;color:#888;text-align:center;margin-bottom:16px;font-family:monospace;}
 
-/* Print reuses same flex skeleton */
-.p-rnum{flex:0 0 22px;display:flex;align-items:center;justify-content:flex-end;
-        font-size:8px;color:#bbb;padding-right:4px;font-family:monospace;}
-.p-pair{flex:2;display:flex;flex-direction:column;gap:4px;padding:4px;
-        border:1.5px solid #bbb;border-radius:8px;min-width:0;}
-.p-ind{flex:1.1;display:flex;flex-direction:column;min-width:0;}
-.p-aisle{flex:0 0 34px;display:flex;align-items:center;justify-content:center;}
-.p-aisle-line{width:0;height:70%;border-left:1px dashed #bbb;}
-.p-aisle-wide{flex:0 0 48px;display:flex;align-items:center;justify-content:center;
-              background:#f0ede8;border-radius:6px;margin:0 3px;}
-.p-aisle-wide .p-aisle-line{border-left:2px solid #999;}
-.p-col-lbl{flex:2;text-align:center;font-size:9px;font-weight:700;color:#777;
-           text-transform:uppercase;letter-spacing:.3px;font-family:monospace;}
-.p-col-lbl.ind{flex:1.1;}
+.p-room-row{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
+.p-rnum{flex:0 0 24px;display:flex;align-items:center;justify-content:flex-end;
+        font-size:9px;color:#aaa;padding-right:5px;font-family:monospace;}
+.p-mesa{flex:2;display:flex;flex-direction:column;gap:5px;padding:5px;
+        border:1.5px solid #bbb;border-radius:8px;min-width:160px;}
+.p-mesa-ind{flex:1.2;display:flex;flex-direction:column;gap:0;min-width:120px;}
+.p-pasillo{flex:0 0 40px;display:flex;align-items:center;justify-content:center;
+           background:#f0ece8;border-radius:5px;margin:0 5px;}
+.p-pasillo-line{width:1px;height:60%;border-left:1px dashed #bbb;}
+.p-pasillo-ancho{flex:0 0 56px;display:flex;align-items:center;justify-content:center;
+                 background:#e8e3dc;border-radius:6px;margin:0 6px;}
+.p-pasillo-ancho .p-pasillo-line{border-left:2px solid #999;}
+.p-col-lbl{flex:2;text-align:center;font-size:9px;font-weight:700;color:#666;
+           text-transform:uppercase;font-family:monospace;min-width:160px;}
+.p-col-lbl.ind{flex:1.2;min-width:120px;}
+.p-front{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
+.p-piz{flex:4.5;background:#154718;color:#fff;border-radius:5px;padding:7px;text-align:center;
+       font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.p-put{flex:3;background:#122035;color:#c9a84c;border-radius:5px;padding:7px;text-align:center;
+       font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
 
-/* Print seat */
+/* Puesto impresión */
 .pseat{
-  border:2px solid #222;border-radius:6px;
-  padding:9px 12px;min-height:58px;
+  border:2.5px solid #222;border-radius:7px;
+  padding:11px 13px;min-height:72px;
   display:flex;flex-direction:column;justify-content:center;
+  word-wrap:break-word;overflow-wrap:break-word;
 }
 .pseat.pe{border:1.5px dashed #ccc;}
-.pfn{font-size:16px;font-weight:800;line-height:1.2;}
-.pln{font-size:11px;color:#555;margin-top:2px;}
+.pfn{font-size:17px;font-weight:800;line-height:1.25;}
+.pln{font-size:11px;color:#555;margin-top:3px;font-weight:600;}
 
-/* ── @MEDIA PRINT ── */
+/* @PRINT */
 @media print{
   .tabbar,.ctrl,.pctrl,.hdr,.legend{display:none!important;}
   #tab-print{display:block!important;}
   #tab-plan{display:none!important;}
   .pprev{padding:0;}
-  .pg{border:none;border-radius:0;padding:6px;}
+  .pg{border:none;border-radius:0;padding:8px;}
   body{background:#fff;}
 }
 </style>
 </head>
 <body>
 
-<!-- TAB BAR -->
+<!-- TABS -->
 <div class="tabbar">
   <span class="tb-logo">IMV 2026 · 2°G</span>
   <button class="tb on" onclick="switchTab('plan',this)">📋 Plan estratégico</button>
   <button class="tb" onclick="switchTab('print',this)">🖨 Solo nombres (imprimir)</button>
 </div>
 
-<!-- ══ TAB 1 ══ -->
+<!-- TAB 1: PLAN -->
 <div id="tab-plan" class="panel on">
   <div class="hdr">
     <div>
       <h1>Plano de Ubicación — 2° Año "G" · 2026</h1>
-      <div class="hdr-sub">Instituto Marítimo de Valparaíso · Formación General · Línea base mayo 2026</div>
+      <div class="hdr-sub">Instituto Marítimo de Valparaíso · Formación General · Mayo 2026</div>
     </div>
-    <div class="hdr-r">26 estudiantes · 3 mesas dobles + fila individual · 4 filas</div>
+    <div class="hdr-r">26 estudiantes · 3 mesas dobles + fila individual<br>4 filas de profundidad</div>
   </div>
-
   <div class="ctrl">
     <button class="btn btn-p" onclick="resetLayout()">↺ Restablecer</button>
-    <span class="hint">Arrastra las tarjetas para mover estudiantes entre cualquier puesto</span>
+    <span class="hint">Arrastra las tarjetas para mover estudiantes entre puestos</span>
   </div>
-
-  <div class="cwrap" id="cwrap-plan"></div>
-
+  <div class="cwrap"><div class="classroom" id="classroom-plan"></div></div>
   <div class="legend">
     <div class="lg"><div class="ld" style="background:#FCEBEB;border-color:#c0392b"></div>Riesgo crítico</div>
-    <div class="lg"><div class="ld" style="background:#FAEEDA;border-color:#c0770a"></div>En seguimiento</div>
-    <div class="lg"><div class="ld" style="background:#F1EFE8;border-color:#7d7b73"></div>Monitorear</div>
-    <div class="lg"><div class="ld" style="background:#EAF3DE;border-color:#3a6e10"></div>Referente</div>
-    <div class="lg"><div class="ld" style="background:#E0F5EE;border-color:#0d7a5a"></div>Destacado</div>
+    <div class="lg"><div class="ld" style="background:#FEF0D9;border-color:#d08010"></div>En seguimiento</div>
+    <div class="lg"><div class="ld" style="background:#EEECEA;border-color:#888077"></div>Monitorear</div>
+    <div class="lg"><div class="ld" style="background:#E8F5DC;border-color:#3d7012"></div>Referente</div>
+    <div class="lg"><div class="ld" style="background:#DCF5EC;border-color:#0c7a58"></div>Destacado</div>
     <div class="lg"><div class="ld" style="background:#EEEDFE;border-color:#534AB7"></div>Par asignado</div>
-    <div class="lg" style="margin-left:auto;font-size:10px;color:#999;font-family:monospace">⏱ atrasos &nbsp;⊖ neg. &nbsp;⊕ pos.</div>
+    <div class="lg" style="margin-left:auto;font-size:10px;color:#999;font-family:monospace">⏱ atrasos &nbsp; ⊖ neg. &nbsp; ⊕ pos.</div>
   </div>
 </div>
 
-<!-- ══ TAB 2 ══ -->
+<!-- TAB 2: PRINT -->
 <div id="tab-print" class="panel">
   <div class="pctrl">
     <button class="btn btn-p" onclick="window.print()">🖨 Imprimir</button>
@@ -249,162 +265,132 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#e8e4dd;color:#1a1a1a;}
     <div class="pg">
       <div class="ptitle">Plano de Ubicación · 2° Año "G"</div>
       <div class="psub">Instituto Marítimo de Valparaíso · 2026</div>
-      <div id="cwrap-print"></div>
+      <div id="classroom-print"></div>
     </div>
   </div>
 </div>
 
 <script>
-/* ══ STUDENTS ══════════════════════════════════════════════ */
+/* ═══════════════════════ DATOS ═══════════════════════ */
 const ST = {
-  boscan:   {fn:'Harri',       ln:'Boscan',      nv:'nc', p1:'3.5', at:11, ng:3},
-  ramos:    {fn:'Francisco',   ln:'Ramos C.',    nv:'ne', p1:'6.8', at:0,  po:2},
-  floresr:  {fn:'Joaquín',     ln:'Flores R.',   nv:'nc', p1:'4.4', at:11, ng:6},
-  guerra:   {fn:'Benjamín',    ln:'Guerra',      nv:'ne', p1:'6.9', at:0,  po:3},
-  matus:    {fn:'Lucas',       ln:'Matus',       nv:'nc', p1:'4.0', at:2,  ng:4},
-  cariaga:  {fn:'Alonso',      ln:'Cariaga',     nv:'ne', p1:'6.7', at:0,  po:2},
-  opazo:    {fn:'Yaslyn',      ln:'Opazo',       nv:'nc', p1:'4.6', at:18, ng:4},
-  martinz:  {fn:'Juan Pedro',  ln:'Martínez',    nv:'nr', p1:'4.6', at:0,  ng:1},
-  ramirez:  {fn:'Javier',      ln:'Ramírez',     nv:'na', p1:'5.5', at:0},
-  mena:     {fn:'Laura',       ln:'Mena',        nv:'nr', p1:'4.7', at:8,  ng:6},
-  contrer:  {fn:'Pedro',       ln:'Contreras H.',nv:'na', p1:'5.8', at:4},
-  perez:    {fn:'Zahira',      ln:'Pérez',       nv:'nr', p1:'5.1', at:17, ng:4},
-  soza:     {fn:'Dylan',       ln:'Soza',        nv:'na', p1:'6.4', at:2,  po:2},
-  gutierr:  {fn:'Monserrat',   ln:'Gutiérrez',   nv:'na', p1:'6.1', at:1,  po:2},
-  oliva:    {fn:'Amylee',      ln:'Oliva',       nv:'np', p1:'6.2', at:0,  po:1, par:true},
-  avila:    {fn:'Abigail',     ln:'Ávila',       nv:'np', p1:'5.1', at:19, ng:5, par:true},
-  torres:   {fn:'Martina',     ln:'Torres',      nv:'nr', p1:'5.4', at:16, ng:9},
-  silva:    {fn:'Joshua',      ln:'Silva',       nv:'na', p1:'5.9', at:2,  po:1},
-  leyton:   {fn:'Danae',       ln:'Leyton',      nv:'nr', p1:'5.7', at:18, ng:1},
-  bazaes:   {fn:'Nicolás',     ln:'Bazaes',      nv:'nm', p1:'5.0', at:0},
-  floresp:  {fn:'Ángela',      ln:'Flores P.',   nv:'nm', p1:'5.2', at:5,  ng:1},
-  bucher:   {fn:'Maximiliano', ln:'Bucher',      nv:'nm', p1:'5.5', at:2,  ng:3},
-  cardenas: {fn:'Raquel',      ln:'Cárdenas',    nv:'nm', p1:'5.7', at:9,  ng:1},
-  sanmart:  {fn:'Vicente',     ln:'San Martín',  nv:'nm', p1:'5.1', at:0,  ng:2},
-  catalan:  {fn:'Ulises',      ln:'Catalán',     nv:'nr', p1:'4.9', at:6,  ng:2},
-  restrep:  {fn:'Colin',       ln:'Restrepo',    nv:'nm', p1:'5.1', at:2,  ng:2},
+  boscan:   {fn:'Harri',       ln:'Boscan',       nv:'nc', p1:'3.5', at:11, ng:3},
+  ramos:    {fn:'Francisco',   ln:'Ramos C.',     nv:'ne', p1:'6.8', at:0,  po:2},
+  floresr:  {fn:'Joaquín',     ln:'Flores R.',    nv:'nc', p1:'4.4', at:11, ng:6},
+  guerra:   {fn:'Benjamín',    ln:'Guerra',       nv:'ne', p1:'6.9', at:0,  po:3},
+  matus:    {fn:'Lucas',       ln:'Matus',        nv:'nc', p1:'4.0', at:2,  ng:4},
+  cariaga:  {fn:'Alonso',      ln:'Cariaga',      nv:'ne', p1:'6.7', at:0,  po:2},
+  opazo:    {fn:'Yaslyn',      ln:'Opazo',        nv:'nc', p1:'4.6', at:18, ng:4},
+  martinz:  {fn:'Juan Pedro',  ln:'Martínez',     nv:'nr', p1:'4.6', at:0,  ng:1},
+  ramirez:  {fn:'Javier',      ln:'Ramírez',      nv:'na', p1:'5.5', at:0},
+  mena:     {fn:'Laura',       ln:'Mena',         nv:'nr', p1:'4.7', at:8,  ng:6},
+  contrer:  {fn:'Pedro',       ln:'Contreras H.', nv:'na', p1:'5.8', at:4},
+  perez:    {fn:'Zahira',      ln:'Pérez',        nv:'nr', p1:'5.1', at:17, ng:4},
+  soza:     {fn:'Dylan',       ln:'Soza',         nv:'na', p1:'6.4', at:2,  po:2},
+  gutierr:  {fn:'Monserrat',   ln:'Gutiérrez',    nv:'na', p1:'6.1', at:1,  po:2},
+  oliva:    {fn:'Amylee',      ln:'Oliva',        nv:'np', p1:'6.2', at:0,  po:1, par:true},
+  avila:    {fn:'Abigail',     ln:'Ávila',        nv:'np', p1:'5.1', at:19, ng:5, par:true},
+  torres:   {fn:'Martina',     ln:'Torres',       nv:'nr', p1:'5.4', at:16, ng:9},
+  silva:    {fn:'Joshua',      ln:'Silva',        nv:'na', p1:'5.9', at:2,  po:1},
+  leyton:   {fn:'Danae',       ln:'Leyton',       nv:'nr', p1:'5.7', at:18, ng:1},
+  bazaes:   {fn:'Nicolás',     ln:'Bazaes',       nv:'nm', p1:'5.0', at:0},
+  floresp:  {fn:'Ángela',      ln:'Flores P.',    nv:'nm', p1:'5.2', at:5,  ng:1},
+  bucher:   {fn:'Maximiliano', ln:'Bucher',       nv:'nm', p1:'5.5', at:2,  ng:3},
+  cardenas: {fn:'Raquel',      ln:'Cárdenas',     nv:'nm', p1:'5.7', at:9,  ng:1},
+  sanmart:  {fn:'Vicente',     ln:'San Martín',   nv:'nm', p1:'5.1', at:0,  ng:2},
+  catalan:  {fn:'Ulises',      ln:'Catalán',      nv:'nr', p1:'4.9', at:6,  ng:2},
+  restrep:  {fn:'Colin',       ln:'Restrepo',     nv:'nm', p1:'5.1', at:2,  ng:2},
 };
 
-/* Layout: 4 rows × 7 seats
-   Índices: [F3_top, F3_bot, F2_top, F2_bot, F1_top, F1_bot, IND]
-   Dentro de cada mesa doble, top = alumno del frente, bot = alumno de atrás
-   (en la vista, se muestran apilados verticalmente en el bloque de mesa)    */
+/* Filas [F3-top, F3-bot, F2-top, F2-bot, F1-top, F1-bot, IND] */
 const INIT = [
   ['boscan',  'ramos',    'floresr', 'guerra',   'matus',   'cariaga',  'opazo'],
-  ['martinz', 'ramirez',  'mena',    'contrer',   'perez',   'soza',     'gutierr'],
-  ['leyton',  'bazaes',   'oliva',   'avila',     'torres',  'silva',    'floresp'],
-  ['bucher',  'cardenas', 'sanmart', 'catalan',   'restrep', null,       null],
+  ['martinz', 'ramirez',  'mena',    'contrer',  'perez',   'soza',     'gutierr'],
+  ['leyton',  'bazaes',   'oliva',   'avila',    'torres',  'silva',    'floresp'],
+  ['bucher',  'cardenas', 'sanmart', 'catalan',  'restrep', null,       null],
 ];
 
 let layout = JSON.parse(JSON.stringify(INIT));
 let dragSrc = null;
 
-/* ══ RENDER PLAN ══════════════════════════════════════════ */
+/* ═══════════════════════ RENDER PLAN ═══════════════════════ */
 function renderPlan() {
-  const w = document.getElementById('cwrap-plan');
-  w.innerHTML = '';
-  w.appendChild(buildFurn('plan'));
-  w.appendChild(buildColHdr('plan'));
-  layout.forEach((row, ri) => w.appendChild(buildSeatRow(row, ri)));
+  const root = document.getElementById('classroom-plan');
+  root.innerHTML = '';
+
+  /* Pizarrón / Docente */
+  root.appendChild(buildFrontRow());
+
+  /* Cabeceras columnas */
+  root.appendChild(buildColHeaders());
+
+  /* Filas de puestos */
+  layout.forEach((row, ri) => root.appendChild(buildSeatRow(row, ri)));
 }
 
-function buildFurn(mode) {
-  const d = mkd('furn-row');
-  d.appendChild(mkd(mode==='plan'?'rnum':'p-rnum'));
+function buildFrontRow() {
+  const d = el('front-row');
+  d.appendChild(el('rnum'));
 
-  if (mode === 'plan') {
-    const piz = mkd('fbox pizarra');
-    piz.textContent = '■  PIZARRÓN';
-    piz.style.cssText = 'flex:4.5;margin-right:0;font-size:13px;';
-    d.appendChild(piz);
-    d.appendChild(makeAisle('plan'));
-    const put = mkd('fbox puesto');
-    put.textContent = '◆  PUESTO DOCENTE';
-    put.style.cssText = 'flex:3.1;font-size:13px;';
-    d.appendChild(put);
-  } else {
-    const piz = mkd('');
-    piz.style.cssText = `flex:1;background:#155017;color:#9ceda0;border-radius:5px;
-      padding:6px;text-align:center;font-size:10px;font-weight:800;
-      text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;`;
-    piz.textContent = 'PIZARRÓN';
-    piz.style.flex = '4.5';
-    d.appendChild(piz);
-    const pa = mkd('p-aisle'); pa.appendChild(mkd('p-aisle-line')); d.appendChild(pa);
-    const put = mkd('');
-    put.style.cssText = `flex:3.1;background:#142338;color:#c9a84c;border-radius:5px;
-      padding:6px;text-align:center;font-size:10px;font-weight:800;
-      text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;`;
-    put.textContent = 'PUESTO DOCENTE';
-    d.appendChild(put);
-  }
+  const piz = el('fbox pizarra');
+  piz.style.cssText = 'flex:4.5;font-size:13px;';
+  piz.textContent = '■  PIZARRÓN';
+  d.appendChild(piz);
+
+  d.appendChild(buildPasillo());
+  d.appendChild(buildPasillo());
+
+  const put = el('fbox puesto');
+  put.style.cssText = 'flex:3.2;font-size:13px;';
+  put.textContent = '◆  PUESTO DOCENTE';
+  d.appendChild(put);
+
   return d;
 }
 
-function buildColHdr(mode) {
-  const d = mkd(mode==='plan'?'hdr-row':'hdr-row');
-  d.style.marginBottom = '5px';
-  d.appendChild(mkd(mode==='plan'?'rnum':'p-rnum'));
+function buildColHeaders() {
+  const d = el('col-hdr-row');
+  d.appendChild(el('rnum'));
 
-  function lbl(t, cls) {
-    const el = mkd(cls);
-    el.textContent = t;
-    return el;
-  }
+  d.appendChild(lbl('col-lbl', 'Fila 3'));
+  d.appendChild(buildPasillo('hdr'));
+  d.appendChild(lbl('col-lbl', 'Fila 2'));
+  d.appendChild(buildPasillo('hdr'));
+  d.appendChild(lbl('col-lbl', 'Fila 1'));
+  d.appendChild(buildPasilloAncho('hdr'));
+  d.appendChild(lbl('col-lbl ind', 'Fila Individual'));
 
-  if (mode === 'plan') {
-    d.appendChild(lbl('Fila 3','col-lbl'));
-    d.appendChild(makeAisle('plan'));
-    d.appendChild(lbl('Fila 2','col-lbl'));
-    d.appendChild(makeAisle('plan'));
-    d.appendChild(lbl('Fila 1','col-lbl'));
-    d.appendChild(makeWideAisle('plan'));
-    d.appendChild(lbl('Fila Individual','col-lbl ind'));
-  } else {
-    d.appendChild(lbl('Fila 3','p-col-lbl'));
-    d.appendChild(makePrintAisle()); d.appendChild(lbl('Fila 2','p-col-lbl'));
-    d.appendChild(makePrintAisle()); d.appendChild(lbl('Fila 1','p-col-lbl'));
-    d.appendChild(makePrintWideAisle());
-    d.appendChild(lbl('Fila Ind.','p-col-lbl ind'));
-  }
   return d;
 }
 
 function buildSeatRow(row, ri) {
-  const d = mkd('room-row');
+  const d = el('room-row');
 
-  const rn = mkd('rnum');
+  const rn = el('rnum');
   rn.textContent = ri + 1;
   d.appendChild(rn);
 
-  /* F3 pair (cols 0,1) */
-  d.appendChild(makePairBlock([row[0],row[1]], ri, [0,1]));
-  d.appendChild(makeAisle('plan'));
+  d.appendChild(buildMesa([row[0], row[1]], ri, [0, 1]));
+  d.appendChild(buildPasillo());
+  d.appendChild(buildMesa([row[2], row[3]], ri, [2, 3]));
+  d.appendChild(buildPasillo());
+  d.appendChild(buildMesa([row[4], row[5]], ri, [4, 5]));
+  d.appendChild(buildPasilloAncho());
 
-  /* F2 pair (cols 2,3) */
-  d.appendChild(makePairBlock([row[2],row[3]], ri, [2,3]));
-  d.appendChild(makeAisle('plan'));
-
-  /* F1 pair (cols 4,5) */
-  d.appendChild(makePairBlock([row[4],row[5]], ri, [4,5]));
-  d.appendChild(makeWideAisle('plan'));
-
-  /* Individual (col 6) */
-  const ind = mkd('ind-block');
-  ind.appendChild(makeSeatCard(row[6], ri, 6));
+  const ind = el('mesa-ind');
+  ind.appendChild(makeCard(row[6], ri, 6));
   d.appendChild(ind);
 
   return d;
 }
 
-function makePairBlock(ids, ri, cols) {
-  const b = mkd('pair-block');
-  ids.forEach((id, i) => b.appendChild(makeSeatCard(id, ri, cols[i])));
+function buildMesa(ids, ri, cols) {
+  const b = el('mesa');
+  ids.forEach((id, i) => b.appendChild(makeCard(id, ri, cols[i])));
   return b;
 }
 
-function makeSeatCard(id, row, col) {
-  const d = mkd('');
+function makeCard(id, row, col) {
+  const d = document.createElement('div');
 
   if (!id) {
     d.className = 'sc empty';
@@ -414,121 +400,205 @@ function makeSeatCard(id, row, col) {
   }
 
   const s = ST[id];
-  d.className = `sc occ ${s.nv}`;
+  d.className = 'sc occ ' + s.nv;
   d.draggable = true;
-  d.title = `${s.fn} ${s.ln}  ·  P1: ${s.p1}`;
+  d.title = s.fn + ' ' + s.ln + '  ·  P1: ' + s.p1;
 
-  let meta = `<span class="sp">${s.p1}</span>`;
-  if (s.at > 0) meta += `<span class="ss">⏱ ${s.at}</span>`;
-  if (s.ng > 0) meta += `<span class="ss">⊖ ${s.ng}</span>`;
-  if (s.po > 0) meta += `<span class="ss">⊕ ${s.po}</span>`;
+  let meta = '<span class="sp">' + s.p1 + '</span>';
+  if (s.at > 0) meta += '<span class="ss">⏱ ' + s.at + '</span>';
+  if (s.ng > 0) meta += '<span class="ss">⊖ ' + s.ng + '</span>';
+  if (s.po > 0) meta += '<span class="ss">⊕ ' + s.po + '</span>';
 
   d.innerHTML =
     (s.par ? '<div class="par-pin">PAR</div>' : '') +
-    `<div class="sn">${s.fn}</div>` +
-    `<div class="sl">${s.ln}</div>` +
-    `<div class="sm">${meta}</div>`;
+    '<div class="sn">' + s.fn + '</div>' +
+    '<div class="sl">' + s.ln + '</div>' +
+    '<div class="sm">' + meta + '</div>';
 
-  d.addEventListener('dragstart', e => {
-    dragSrc = {row, col};
-    setTimeout(() => d.classList.add('dragging'), 0);
+  d.addEventListener('dragstart', function(e) {
+    dragSrc = {row: row, col: col};
+    setTimeout(function() { d.classList.add('dragging'); }, 0);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', 'x');
   });
-  d.addEventListener('dragend', () => d.classList.remove('dragging'));
+  d.addEventListener('dragend', function() { d.classList.remove('dragging'); });
   addDrop(d, row, col);
   return d;
 }
 
-function addDrop(el, row, col) {
-  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-  el.addEventListener('drop', e => {
+function addDrop(el_el, row, col) {
+  el_el.addEventListener('dragover', function(e) {
     e.preventDefault();
-    el.classList.remove('drag-over');
+    el_el.classList.add('drag-over');
+  });
+  el_el.addEventListener('dragleave', function() {
+    el_el.classList.remove('drag-over');
+  });
+  el_el.addEventListener('drop', function(e) {
+    e.preventDefault();
+    el_el.classList.remove('drag-over');
     if (!dragSrc) return;
-    const {row:sr, col:sc} = dragSrc;
-    if (sr===row && sc===col) { dragSrc=null; return; }
-    [layout[row][col], layout[sr][sc]] = [layout[sr][sc], layout[row][col]];
+    var sr = dragSrc.row, sc = dragSrc.col;
+    if (sr === row && sc === col) { dragSrc = null; return; }
+    var tmp = layout[row][col];
+    layout[row][col] = layout[sr][sc];
+    layout[sr][sc] = tmp;
     dragSrc = null;
     render();
   });
 }
 
-function makeAisle(mode) {
-  const d = mkd('aisle');
-  d.innerHTML = `<div class="aisle-line"></div>
-    <div class="aisle-lbl">pasillo</div>
-    <div class="aisle-line"></div>`;
+function buildPasillo(mode) {
+  if (mode === 'hdr') {
+    const d = el('');
+    d.style.cssText = 'flex:0 0 56px;margin:0 5px;';
+    return d;
+  }
+  const d = el('pasillo');
+  d.innerHTML =
+    '<div class="pasillo-line"></div>' +
+    '<div class="pasillo-txt">pasillo</div>' +
+    '<div class="pasillo-line"></div>';
   return d;
-}
-function makeWideAisle(mode) {
-  const d = mkd('aisle-wide');
-  d.innerHTML = `<div class="aisle-line"></div>
-    <div class="aisle-lbl">pasillo</div>
-    <div class="aisle-line"></div>`;
-  return d;
-}
-function makePrintAisle() {
-  const d = mkd('p-aisle');
-  const l = mkd('p-aisle-line'); d.appendChild(l); return d;
-}
-function makePrintWideAisle() {
-  const d = mkd('p-aisle-wide');
-  const l = mkd('p-aisle-line'); d.appendChild(l); return d;
 }
 
-/* ══ RENDER PRINT ══════════════════════════════════════════ */
+function buildPasilloAncho(mode) {
+  if (mode === 'hdr') {
+    const d = el('');
+    d.style.cssText = 'flex:0 0 76px;margin:0 6px;';
+    return d;
+  }
+  const d = el('pasillo-ancho');
+  d.innerHTML =
+    '<div class="pasillo-line"></div>' +
+    '<div class="pasillo-txt">pasillo</div>' +
+    '<div class="pasillo-line"></div>';
+  return d;
+}
+
+/* ═══════════════════════ RENDER PRINT ═══════════════════════ */
 function renderPrint() {
-  const w = document.getElementById('cwrap-print');
-  w.innerHTML = '';
-  w.appendChild(buildFurn('print'));
-  w.appendChild(buildColHdr('print'));
-  layout.forEach((row, ri) => w.appendChild(buildPrintRow(row, ri)));
+  const root = document.getElementById('classroom-print');
+  root.innerHTML = '';
+
+  /* Front */
+  const f = document.createElement('div');
+  f.className = 'p-front';
+  f.style.cssText = 'display:flex;align-items:stretch;margin-bottom:8px;gap:0;';
+  const pn = document.createElement('div');
+  pn.style.cssText = 'flex:0 0 24px;';
+  f.appendChild(pn);
+  const piz = document.createElement('div');
+  piz.className = 'p-piz';
+  piz.style.cssText = 'flex:4.5;';
+  piz.textContent = 'PIZARRÓN';
+  f.appendChild(piz);
+  f.appendChild(printPasillo());
+  f.appendChild(printPasillo());
+  const put = document.createElement('div');
+  put.className = 'p-put';
+  put.style.cssText = 'flex:3.2;';
+  put.textContent = 'PUESTO DOCENTE';
+  f.appendChild(put);
+  root.appendChild(f);
+
+  /* Col headers */
+  const h = document.createElement('div');
+  h.style.cssText = 'display:flex;align-items:stretch;margin-bottom:5px;gap:0;';
+  const hn = document.createElement('div');
+  hn.style.cssText = 'flex:0 0 24px;';
+  h.appendChild(hn);
+  h.appendChild(plbl('p-col-lbl','Fila 3'));
+  h.appendChild(printPasillo());
+  h.appendChild(plbl('p-col-lbl','Fila 2'));
+  h.appendChild(printPasillo());
+  h.appendChild(plbl('p-col-lbl','Fila 1'));
+  h.appendChild(printPasilloAncho());
+  h.appendChild(plbl('p-col-lbl ind','Fila Individual'));
+  root.appendChild(h);
+
+  /* Rows */
+  layout.forEach(function(row, ri) {
+    const d = document.createElement('div');
+    d.className = 'p-room-row';
+
+    const rn = document.createElement('div');
+    rn.className = 'p-rnum';
+    rn.textContent = ri + 1;
+    d.appendChild(rn);
+
+    function pmesa(ids) {
+      const b = document.createElement('div');
+      b.className = 'p-mesa';
+      ids.forEach(function(id) {
+        const s = document.createElement('div');
+        if (id) {
+          s.className = 'pseat';
+          const st = ST[id];
+          s.innerHTML = '<div class="pfn">' + st.fn + '</div><div class="pln">' + st.ln + '</div>';
+        } else {
+          s.className = 'pseat pe';
+        }
+        b.appendChild(s);
+      });
+      return b;
+    }
+
+    d.appendChild(pmesa([row[0],row[1]]));
+    d.appendChild(printPasillo());
+    d.appendChild(pmesa([row[2],row[3]]));
+    d.appendChild(printPasillo());
+    d.appendChild(pmesa([row[4],row[5]]));
+    d.appendChild(printPasilloAncho());
+
+    const ind = document.createElement('div');
+    ind.className = 'p-mesa-ind';
+    const ps = document.createElement('div');
+    if (row[6]) {
+      ps.className = 'pseat';
+      const st = ST[row[6]];
+      ps.innerHTML = '<div class="pfn">' + st.fn + '</div><div class="pln">' + st.ln + '</div>';
+    } else {
+      ps.className = 'pseat pe';
+    }
+    ind.appendChild(ps);
+    d.appendChild(ind);
+    root.appendChild(d);
+  });
 }
 
-function buildPrintRow(row, ri) {
+function printPasillo() {
   const d = document.createElement('div');
-  d.style.cssText = 'display:flex;align-items:stretch;margin-bottom:6px;';
-
-  const rn = mkd('p-rnum'); rn.textContent = ri+1; d.appendChild(rn);
-
-  function pair(ids) {
-    const b = mkd('p-pair');
-    ids.forEach(id => b.appendChild(makePrintSeat(id)));
-    return b;
-  }
-
-  d.appendChild(pair([row[0],row[1]]));
-  d.appendChild(makePrintAisle());
-  d.appendChild(pair([row[2],row[3]]));
-  d.appendChild(makePrintAisle());
-  d.appendChild(pair([row[4],row[5]]));
-  d.appendChild(makePrintWideAisle());
-
-  const ind = mkd('p-ind');
-  ind.appendChild(makePrintSeat(row[6]));
-  d.appendChild(ind);
-
+  d.className = 'p-pasillo';
+  const l = document.createElement('div');
+  l.className = 'p-pasillo-line';
+  d.appendChild(l);
+  return d;
+}
+function printPasilloAncho() {
+  const d = document.createElement('div');
+  d.className = 'p-pasillo-ancho';
+  const l = document.createElement('div');
+  l.className = 'p-pasillo-line';
+  d.appendChild(l);
   return d;
 }
 
-function makePrintSeat(id) {
-  const d = document.createElement('div');
-  if (id) {
-    const s = ST[id];
-    d.className = 'pseat';
-    d.innerHTML = `<div class="pfn">${s.fn}</div><div class="pln">${s.ln}</div>`;
-  } else {
-    d.className = 'pseat pe';
-  }
-  return d;
-}
-
-/* ══ UTILS ══════════════════════════════════════════════════ */
-function mkd(cls) {
+/* ═══════════════════════ UTILS ═══════════════════════ */
+function el(cls) {
   const d = document.createElement('div');
   if (cls) d.className = cls;
+  return d;
+}
+function lbl(cls, text) {
+  const d = el(cls);
+  d.textContent = text;
+  return d;
+}
+function plbl(cls, text) {
+  const d = document.createElement('div');
+  d.className = cls;
+  d.textContent = text;
   return d;
 }
 
@@ -540,9 +610,9 @@ function resetLayout() {
 }
 
 function switchTab(id, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
-  document.getElementById('tab-'+id).classList.add('on');
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.tb').forEach(function(b) { b.classList.remove('on'); });
+  document.getElementById('tab-' + id).classList.add('on');
   btn.classList.add('on');
   render();
 }
