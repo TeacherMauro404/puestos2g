@@ -2,620 +2,323 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Plano 2°G — IMV 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Sala · 2°G — IMV 2026</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#dedad3;color:#111;}
+  :root{
+    --ink:#14202e;
+    --paper:#f4f1ea;
+    --line:#c9c2b4;
+    --brass:#b08b3e;
+    --brass-d:#8f6e28;
+    --r-alto-bg:#f6dede;   --r-alto-bd:#c0392b;  --r-alto-tx:#7d211a;
+    --r-medio-bg:#fbf1d8;  --r-medio-bd:#c99a2e; --r-medio-tx:#7a5c14;
+    --r-bajo-bg:#e2efe4;   --r-bajo-bd:#4a8f5b;  --r-bajo-tx:#245231;
+    --r-vacio-bg:#ffffff;  --r-vacio-bd:#d7d2c6;
+    --aisle:#e7e2d6;
+    --shadow:0 2px 10px rgba(20,32,46,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#eae5da;color:var(--ink);
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:14px;}
 
-/* TABS */
-.tabbar{background:#0d1b2a;display:flex;align-items:center;padding:0 20px;gap:4px;}
-.tb-logo{color:#c9a84c;font-weight:700;font-size:13px;margin-right:16px;}
-.tb{padding:13px 20px;font-size:13px;font-weight:600;border:none;cursor:pointer;
-    background:transparent;color:rgba(255,255,255,.4);border-bottom:3px solid transparent;}
-.tb.on{color:#c9a84c;border-bottom-color:#c9a84c;}
-.tb:hover:not(.on){color:rgba(255,255,255,.75);}
-.panel{display:none;}
-.panel.on{display:block;}
+  /* ── TOP BAR ── */
+  .topbar{background:var(--ink);color:#fff;display:flex;align-items:center;
+    justify-content:space-between;padding:14px 26px;
+    border-bottom:3px solid var(--brass);}
+  .brand{display:flex;flex-direction:column;gap:2px;}
+  .brand .k{font-size:11px;letter-spacing:2.5px;color:var(--brass);
+    text-transform:uppercase;font-weight:700;}
+  .brand h1{font-size:18px;font-weight:600;letter-spacing:.3px;}
+  .brand .sub{font-size:11px;color:rgba(255,255,255,.55);font-family:monospace;}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;}
+  .btn{padding:8px 15px;border-radius:7px;border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:12.5px;
+    font-weight:600;transition:.15s;}
+  .btn:hover{background:rgba(255,255,255,.16);}
+  .btn.primary{background:var(--brass);border-color:var(--brass);color:#20160a;}
+  .btn.primary:hover{background:var(--brass-d);}
 
-/* HEADER */
-.hdr{background:#0d1b2a;color:#fff;padding:14px 24px;display:flex;
-     justify-content:space-between;align-items:center;border-bottom:4px solid #c9a84c;}
-.hdr h1{font-size:17px;font-weight:700;}
-.hdr-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:monospace;}
-.hdr-r{font-size:10px;color:#c9a84c;font-family:monospace;text-align:right;line-height:1.7;}
+  /* ── HINT ── */
+  .hintbar{padding:10px 26px;background:#f7f4ee;border-bottom:1px solid var(--line);
+    font-size:12.5px;color:#5a5347;display:flex;gap:22px;flex-wrap:wrap;align-items:center;}
+  .hintbar b{color:var(--ink);}
+  .legend{display:flex;gap:14px;align-items:center;margin-left:auto;}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;}
+  .swatch{width:14px;height:14px;border-radius:3px;border:2px solid;}
+  .sw-alto{background:var(--r-alto-bg);border-color:var(--r-alto-bd);}
+  .sw-medio{background:var(--r-medio-bg);border-color:var(--r-medio-bd);}
+  .sw-bajo{background:var(--r-bajo-bg);border-color:var(--r-bajo-bd);}
 
-/* CONTROLS */
-.ctrl{padding:12px 24px 0;display:flex;align-items:center;gap:12px;}
-.btn{padding:8px 18px;border-radius:6px;border:1.5px solid #bbb;background:#fff;
-     cursor:pointer;font-size:12px;font-weight:600;}
-.btn:hover{background:#e0dbd3;}
-.btn-p{background:#0d1b2a;color:#c9a84c;border-color:#0d1b2a;}
-.btn-p:hover{background:#1a2e45;}
-.hint{font-size:11px;color:#888;}
+  /* ── STAGE ── */
+  .stage{padding:26px;display:flex;justify-content:center;}
+  .room{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:22px 26px 26px;width:100%;max-width:1180px;}
 
-/* CLASSROOM OUTER — scrollable si la pantalla es estrecha */
-.cwrap{padding:18px 24px 10px;overflow-x:auto;}
-.classroom{min-width:900px;}
+  .front{display:flex;gap:12px;margin-bottom:20px;align-items:stretch;}
+  .board{flex:3;background:#243a2b;color:#dfeee2;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    letter-spacing:3px;font-size:13px;padding:14px;text-transform:uppercase;
+    border:2px solid #1a2b20;}
+  .teacher{flex:1;background:#e9e0cc;border:2px solid var(--brass);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    color:var(--brass-d);font-size:12px;letter-spacing:1px;text-transform:uppercase;text-align:center;}
 
-/* ── SHARED ROW ──
-   Cada fila usa display:flex con estas piezas:
-   [rnum] [MESA-F3] [PASILLO] [MESA-F2] [PASILLO] [MESA-F1] [PASILLO-ANCHO] [IND]
-   Cada MESA contiene 2 tarjetas apiladas (flex-direction:column)
-*/
-.room-row{display:flex;align-items:stretch;margin-bottom:12px;gap:0;}
+  /* seating grid: 3 double-desk columns + aisle + individual column */
+  .grid{display:grid;
+    grid-template-columns:1fr 1fr 1fr 26px 1fr;
+    gap:16px;align-items:start;}
+  .col-h{grid-row:1;text-align:center;font-size:11px;font-weight:800;
+    letter-spacing:1.5px;text-transform:uppercase;color:#6a6252;padding-bottom:8px;}
+  .col{display:flex;flex-direction:column;gap:14px;}
+  .aisle{background:repeating-linear-gradient(0deg,var(--aisle),var(--aisle) 7px,transparent 7px,transparent 14px);
+    border-radius:6px;align-self:stretch;position:relative;}
+  .aisle::after{content:"PASILLO";position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(-90deg);font-size:9px;font-weight:800;
+    letter-spacing:2px;color:#a49b88;white-space:nowrap;}
 
-.rnum{
-  flex:0 0 28px;display:flex;align-items:center;justify-content:flex-end;
-  font-size:10px;color:#aaa;font-family:monospace;padding-right:6px;
-}
+  /* a desk (double = 2 seats stacked; single = 1 seat) */
+  .desk{background:#e5ded0;border:1.5px solid #cfc7b6;border-radius:9px;padding:7px;
+    display:flex;flex-direction:column;gap:7px;}
+  .desk.single{background:transparent;border:none;padding:0;}
 
-/* Mesa doble: contiene 2 tarjetas apiladas */
-.mesa{
-  flex:2;
-  display:flex;flex-direction:column;gap:6px;
-  padding:6px;
-  background:#e8e3da;
-  border:2px solid #b8b0a4;
-  border-radius:10px;
-  min-width:160px;
-}
+  .seat{border:2.5px solid;border-radius:8px;padding:9px 10px;min-height:62px;
+    display:flex;flex-direction:column;justify-content:center;gap:2px;cursor:grab;
+    transition:.12s;position:relative;user-select:none;}
+  .seat:active{cursor:grabbing;}
+  .seat.drag-over{outline:3px dashed var(--ink);outline-offset:1px;}
+  .seat .num{position:absolute;top:5px;right:8px;font-size:9px;font-weight:800;
+    color:rgba(0,0,0,.32);font-family:monospace;}
+  .seat .fn{font-size:14.5px;font-weight:800;line-height:1.12;}
+  .seat .ln{font-size:11.5px;font-weight:600;opacity:.72;line-height:1.12;}
+  .seat[data-risk="alto"]{background:var(--r-alto-bg);border-color:var(--r-alto-bd);color:var(--r-alto-tx);}
+  .seat[data-risk="medio"]{background:var(--r-medio-bg);border-color:var(--r-medio-bd);color:var(--r-medio-tx);}
+  .seat[data-risk="bajo"]{background:var(--r-bajo-bg);border-color:var(--r-bajo-bd);color:var(--r-bajo-tx);}
+  .seat.empty{background:var(--r-vacio-bg);border:2.5px dashed var(--r-vacio-bd);
+    color:#b6b0a2;cursor:default;align-items:center;}
+  .seat.empty::before{content:"libre";font-size:11px;font-style:italic;}
+  .seat[contenteditable]{outline:none;}
 
-/* Mesa individual */
-.mesa-ind{
-  flex:1.2;
-  display:flex;flex-direction:column;gap:0;
-  min-width:120px;
-}
-
-/* PASILLOS */
-.pasillo{
-  flex:0 0 46px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  background:#d4cfc7;border-radius:6px;margin:0 5px;
-}
-.pasillo-line{width:2px;flex:1;max-height:60%;background:repeating-linear-gradient(
-  to bottom,#b8b0a4 0px,#b8b0a4 6px,transparent 6px,transparent 12px);}
-.pasillo-txt{font-size:7px;font-family:monospace;color:#a09890;text-transform:uppercase;
-  letter-spacing:1px;writing-mode:vertical-lr;transform:rotate(180deg);}
-
-.pasillo-ancho{
-  flex:0 0 64px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  background:#c8c2b8;border-radius:8px;margin:0 6px;
-}
-.pasillo-ancho .pasillo-line{background:repeating-linear-gradient(
-  to bottom,#a09890 0px,#a09890 6px,transparent 6px,transparent 12px);}
-.pasillo-ancho .pasillo-txt{color:#807870;font-weight:700;}
-
-/* ── TARJETA DE PUESTO ── */
-.sc{
-  border:2.5px solid #999;
-  border-radius:8px;
-  padding:12px 14px;
-  min-height:78px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:4px;
-  position:relative;
-  /* SIN overflow:hidden — el texto se ve completo */
-  word-wrap:break-word;
-  overflow-wrap:break-word;
-}
-.sc.occ{cursor:grab;transition:transform .12s,box-shadow .12s;}
-.sc.occ:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
-.sc.occ:active{cursor:grabbing;}
-.sc.empty{
-  background:#f0ece6;border:2.5px dashed #bbb;
-  display:flex;align-items:center;justify-content:center;
-  color:#ccc;font-size:11px;font-family:monospace;cursor:default;min-height:78px;
-}
-.sc.drag-over{box-shadow:0 0 0 4px #3b82f6!important;border-color:#3b82f6!important;}
-.sc.dragging{opacity:.2;}
-
-/* NOMBRE — GRANDE Y CLARO */
-.sn{
-  font-size:16px;
-  font-weight:800;
-  line-height:1.25;
-  /* SIN white-space:nowrap ni overflow:hidden */
-}
-.sl{
-  font-size:11px;
-  font-weight:600;
-  opacity:.65;
-  line-height:1.3;
-}
-.sm{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-.sp{font-size:12px;font-weight:800;font-family:monospace;}
-.ss{font-size:10px;opacity:.75;}
-.par-pin{
-  position:absolute;top:5px;right:7px;
-  font-size:8px;background:#534AB7;color:#fff;
-  padding:2px 7px;border-radius:4px;font-weight:800;letter-spacing:.5px;
-}
-
-/* COLORES DE NIVEL */
-.nc{background:#FCEBEB;border-color:#c0392b;color:#7a1515;}
-.nr{background:#FEF0D9;border-color:#d08010;color:#6b3d00;}
-.nm{background:#EEECEA;border-color:#888077;color:#3a3830;}
-.na{background:#E8F5DC;border-color:#3d7012;color:#234008;}
-.ne{background:#DCF5EC;border-color:#0c7a58;color:#054535;}
-.np{background:#EEEDFE;border-color:#534AB7;color:#2d2580;}
-
-/* FILA FRONTAL (pizarrón / docente) */
-.front-row{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
-.fbox{
-  border-radius:8px;padding:9px 14px;text-align:center;
-  font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-  display:flex;align-items:center;justify-content:center;
-}
-.pizarra{background:#154718;color:#8eeea0;}
-.puesto{background:#122035;color:#c9a84c;border:2px solid #c9a84c;}
-
-/* CABECERA DE COLUMNAS */
-.col-hdr-row{display:flex;align-items:stretch;margin-bottom:6px;gap:0;}
-.col-lbl{
-  flex:2;text-align:center;padding:5px 4px;
-  font-size:10px;font-weight:700;color:#444;
-  text-transform:uppercase;letter-spacing:.5px;font-family:monospace;
-  background:#c8c2b6;border-radius:5px;min-width:160px;
-}
-.col-lbl.ind{flex:1.2;min-width:120px;}
-
-/* LEYENDA */
-.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 24px;
-        border-top:1px solid #c8c0b0;background:#fff;}
-.lg{display:flex;align-items:center;gap:6px;font-size:11px;color:#444;}
-.ld{width:14px;height:14px;border-radius:3px;border:2px solid;flex-shrink:0;}
-
-/* ══════════════════════════════
-   PESTAÑA IMPRIMIR
-══════════════════════════════ */
-.pctrl{padding:14px 24px 0;display:flex;align-items:center;gap:12px;}
-.pprev{padding:16px 24px;overflow-x:auto;}
-.pg{background:#fff;border:1px solid #ccc;border-radius:8px;padding:22px;min-width:900px;}
-.ptitle{font-size:18px;font-weight:800;text-align:center;margin-bottom:3px;}
-.psub{font-size:10px;color:#888;text-align:center;margin-bottom:16px;font-family:monospace;}
-
-.p-room-row{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
-.p-rnum{flex:0 0 24px;display:flex;align-items:center;justify-content:flex-end;
-        font-size:9px;color:#aaa;padding-right:5px;font-family:monospace;}
-.p-mesa{flex:2;display:flex;flex-direction:column;gap:5px;padding:5px;
-        border:1.5px solid #bbb;border-radius:8px;min-width:160px;}
-.p-mesa-ind{flex:1.2;display:flex;flex-direction:column;gap:0;min-width:120px;}
-.p-pasillo{flex:0 0 40px;display:flex;align-items:center;justify-content:center;
-           background:#f0ece8;border-radius:5px;margin:0 5px;}
-.p-pasillo-line{width:1px;height:60%;border-left:1px dashed #bbb;}
-.p-pasillo-ancho{flex:0 0 56px;display:flex;align-items:center;justify-content:center;
-                 background:#e8e3dc;border-radius:6px;margin:0 6px;}
-.p-pasillo-ancho .p-pasillo-line{border-left:2px solid #999;}
-.p-col-lbl{flex:2;text-align:center;font-size:9px;font-weight:700;color:#666;
-           text-transform:uppercase;font-family:monospace;min-width:160px;}
-.p-col-lbl.ind{flex:1.2;min-width:120px;}
-.p-front{display:flex;align-items:stretch;margin-bottom:8px;gap:0;}
-.p-piz{flex:4.5;background:#154718;color:#fff;border-radius:5px;padding:7px;text-align:center;
-       font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
-.p-put{flex:3;background:#122035;color:#c9a84c;border-radius:5px;padding:7px;text-align:center;
-       font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
-
-/* Puesto impresión */
-.pseat{
-  border:2.5px solid #222;border-radius:7px;
-  padding:11px 13px;min-height:72px;
-  display:flex;flex-direction:column;justify-content:center;
-  word-wrap:break-word;overflow-wrap:break-word;
-}
-.pseat.pe{border:1.5px dashed #ccc;}
-.pfn{font-size:17px;font-weight:800;line-height:1.25;}
-.pln{font-size:11px;color:#555;margin-top:3px;font-weight:600;}
-
-/* @PRINT */
-@media print{
-  .tabbar,.ctrl,.pctrl,.hdr,.legend{display:none!important;}
-  #tab-print{display:block!important;}
-  #tab-plan{display:none!important;}
-  .pprev{padding:0;}
-  .pg{border:none;border-radius:0;padding:8px;}
-  body{background:#fff;}
-}
+  /* ── PRINT: A4 LANDSCAPE ── */
+  @media print{
+    @page{size:A4 landscape;margin:8mm;}
+    html,body{background:#fff;font-size:11px;}
+    .topbar,.hintbar,.no-print{display:none !important;}
+    .stage{padding:0;}
+    .room{box-shadow:none;border:1.5px solid #999;max-width:100%;border-radius:8px;
+      padding:10px 14px 14px;page-break-inside:avoid;}
+    .front{margin-bottom:12px;}
+    .board{padding:9px;font-size:11px;}
+    .grid{gap:10px;grid-template-columns:1fr 1fr 1fr 20px 1fr;}
+    .col{gap:9px;}
+    .desk{padding:5px;gap:5px;}
+    .seat{min-height:46px;padding:6px 8px;box-shadow:none;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .seat .fn{font-size:12px;}
+    .seat .ln{font-size:10px;}
+    .print-foot{display:block !important;}
+  }
+  .print-foot{display:none;margin-top:10px;text-align:center;font-size:10px;
+    color:#666;border-top:1px solid #ccc;padding-top:6px;}
 </style>
 </head>
 <body>
 
-<!-- TABS -->
-<div class="tabbar">
-  <span class="tb-logo">IMV 2026 · 2°G</span>
-  <button class="tb on" onclick="switchTab('plan',this)">📋 Plan estratégico</button>
-  <button class="tb" onclick="switchTab('print',this)">🖨 Solo nombres (imprimir)</button>
+<div class="topbar">
+  <div class="brand">
+    <span class="k">Instituto Marítimo de Valparaíso</span>
+    <h1>Plano de Sala · 2º Año "G" — 2026</h1>
+    <span class="sub">Prof. Jefe: Juan Barria Godoy · 26 estudiantes</span>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="resetLayout()">↺ Restablecer</button>
+    <button class="btn primary" onclick="window.print()">⎙ Imprimir / Guardar PDF</button>
+  </div>
 </div>
 
-<!-- TAB 1: PLAN -->
-<div id="tab-plan" class="panel on">
-  <div class="hdr">
-    <div>
-      <h1>Plano de Ubicación — 2° Año "G" · 2026</h1>
-      <div class="hdr-sub">Instituto Marítimo de Valparaíso · Formación General · Mayo 2026</div>
-    </div>
-    <div class="hdr-r">26 estudiantes · 3 mesas dobles + fila individual<br>4 filas de profundidad</div>
-  </div>
-  <div class="ctrl">
-    <button class="btn btn-p" onclick="resetLayout()">↺ Restablecer</button>
-    <span class="hint">Arrastra las tarjetas para mover estudiantes entre puestos</span>
-  </div>
-  <div class="cwrap"><div class="classroom" id="classroom-plan"></div></div>
+<div class="hintbar">
+  <span><b>Arrastra</b> una tarjeta sobre otra para intercambiar puestos.</span>
+  <span><b>Doble clic</b> en un nombre para editarlo.</span>
   <div class="legend">
-    <div class="lg"><div class="ld" style="background:#FCEBEB;border-color:#c0392b"></div>Riesgo crítico</div>
-    <div class="lg"><div class="ld" style="background:#FEF0D9;border-color:#d08010"></div>En seguimiento</div>
-    <div class="lg"><div class="ld" style="background:#EEECEA;border-color:#888077"></div>Monitorear</div>
-    <div class="lg"><div class="ld" style="background:#E8F5DC;border-color:#3d7012"></div>Referente</div>
-    <div class="lg"><div class="ld" style="background:#DCF5EC;border-color:#0c7a58"></div>Destacado</div>
-    <div class="lg"><div class="ld" style="background:#EEEDFE;border-color:#534AB7"></div>Par asignado</div>
-    <div class="lg" style="margin-left:auto;font-size:10px;color:#999;font-family:monospace">⏱ atrasos &nbsp; ⊖ neg. &nbsp; ⊕ pos.</div>
+    <span class="chip"><span class="swatch sw-alto"></span>Riesgo alto</span>
+    <span class="chip"><span class="swatch sw-medio"></span>Medio</span>
+    <span class="chip"><span class="swatch sw-bajo"></span>Bajo</span>
   </div>
 </div>
 
-<!-- TAB 2: PRINT -->
-<div id="tab-print" class="panel">
-  <div class="pctrl">
-    <button class="btn btn-p" onclick="window.print()">🖨 Imprimir</button>
-    <span class="hint">Solo nombres · Sin métricas · Para pegar en la sala</span>
-  </div>
-  <div class="pprev">
-    <div class="pg">
-      <div class="ptitle">Plano de Ubicación · 2° Año "G"</div>
-      <div class="psub">Instituto Marítimo de Valparaíso · 2026</div>
-      <div id="classroom-print"></div>
+<div class="stage">
+  <div class="room">
+    <div class="front">
+      <div class="board">Pizarrón</div>
+      <div class="teacher">Mesa<br>Docente</div>
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="col-h" style="grid-column:1">Columna A</div>
+      <div class="col-h" style="grid-column:2">Columna B</div>
+      <div class="col-h" style="grid-column:3">Columna C</div>
+      <div class="col-h" style="grid-column:4"></div>
+      <div class="col-h" style="grid-column:5">Individual</div>
+
+      <div class="col" data-col="A" style="grid-column:1"></div>
+      <div class="col" data-col="B" style="grid-column:2"></div>
+      <div class="col" data-col="C" style="grid-column:3"></div>
+      <div class="aisle" style="grid-column:4"></div>
+      <div class="col" data-col="D" style="grid-column:5"></div>
+    </div>
+
+    <div class="print-foot">
+      Plano de sala 2º "G" · IMV 2026 · Generado el 08-07-2026 —
+      Rojo: riesgo alto · Amarillo: medio · Verde: bajo
     </div>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════ DATOS ═══════════════════════ */
-const ST = {
-  boscan:   {fn:'Harri',       ln:'Boscan',       nv:'nc', p1:'3.5', at:11, ng:3},
-  ramos:    {fn:'Francisco',   ln:'Ramos C.',     nv:'ne', p1:'6.8', at:0,  po:2},
-  floresr:  {fn:'Joaquín',     ln:'Flores R.',    nv:'nc', p1:'4.4', at:11, ng:6},
-  guerra:   {fn:'Benjamín',    ln:'Guerra',       nv:'ne', p1:'6.9', at:0,  po:3},
-  matus:    {fn:'Lucas',       ln:'Matus',        nv:'nc', p1:'4.0', at:2,  ng:4},
-  cariaga:  {fn:'Alonso',      ln:'Cariaga',      nv:'ne', p1:'6.7', at:0,  po:2},
-  opazo:    {fn:'Yaslyn',      ln:'Opazo',        nv:'nc', p1:'4.6', at:18, ng:4},
-  martinz:  {fn:'Juan Pedro',  ln:'Martínez',     nv:'nr', p1:'4.6', at:0,  ng:1},
-  ramirez:  {fn:'Javier',      ln:'Ramírez',      nv:'na', p1:'5.5', at:0},
-  mena:     {fn:'Laura',       ln:'Mena',         nv:'nr', p1:'4.7', at:8,  ng:6},
-  contrer:  {fn:'Pedro',       ln:'Contreras H.', nv:'na', p1:'5.8', at:4},
-  perez:    {fn:'Zahira',      ln:'Pérez',        nv:'nr', p1:'5.1', at:17, ng:4},
-  soza:     {fn:'Dylan',       ln:'Soza',         nv:'na', p1:'6.4', at:2,  po:2},
-  gutierr:  {fn:'Monserrat',   ln:'Gutiérrez',    nv:'na', p1:'6.1', at:1,  po:2},
-  oliva:    {fn:'Amylee',      ln:'Oliva',        nv:'np', p1:'6.2', at:0,  po:1, par:true},
-  avila:    {fn:'Abigail',     ln:'Ávila',        nv:'np', p1:'5.1', at:19, ng:5, par:true},
-  torres:   {fn:'Martina',     ln:'Torres',       nv:'nr', p1:'5.4', at:16, ng:9},
-  silva:    {fn:'Joshua',      ln:'Silva',        nv:'na', p1:'5.9', at:2,  po:1},
-  leyton:   {fn:'Danae',       ln:'Leyton',       nv:'nr', p1:'5.7', at:18, ng:1},
-  bazaes:   {fn:'Nicolás',     ln:'Bazaes',       nv:'nm', p1:'5.0', at:0},
-  floresp:  {fn:'Ángela',      ln:'Flores P.',    nv:'nm', p1:'5.2', at:5,  ng:1},
-  bucher:   {fn:'Maximiliano', ln:'Bucher',       nv:'nm', p1:'5.5', at:2,  ng:3},
-  cardenas: {fn:'Raquel',      ln:'Cárdenas',     nv:'nm', p1:'5.7', at:9,  ng:1},
-  sanmart:  {fn:'Vicente',     ln:'San Martín',   nv:'nm', p1:'5.1', at:0,  ng:2},
-  catalan:  {fn:'Ulises',      ln:'Catalán',      nv:'nr', p1:'4.9', at:6,  ng:2},
-  restrep:  {fn:'Colin',       ln:'Restrepo',     nv:'nm', p1:'5.1', at:2,  ng:2},
-};
-
-/* Filas [F3-top, F3-bot, F2-top, F2-bot, F1-top, F1-bot, IND] */
-const INIT = [
-  ['boscan',  'ramos',    'floresr', 'guerra',   'matus',   'cariaga',  'opazo'],
-  ['martinz', 'ramirez',  'mena',    'contrer',  'perez',   'soza',     'gutierr'],
-  ['leyton',  'bazaes',   'oliva',   'avila',    'torres',  'silva',    'floresp'],
-  ['bucher',  'cardenas', 'sanmart', 'catalan',  'restrep', null,       null],
+/* ════ NÓMINA (N° lista original; excluye Paredes Ortiz, recién incorporado) ════ */
+const STUDENTS = [
+  {id:"s1",  n:1,  fn:"Abigail",     ln:"Ávila Velastín",      risk:"alto"},
+  {id:"s2",  n:2,  fn:"Nicolás",     ln:"Bazaes Campos",       risk:"medio"},
+  {id:"s3",  n:3,  fn:"Harri",       ln:"Boscan Báez",         risk:"alto"},
+  {id:"s4",  n:4,  fn:"Maximiliano", ln:"Bucher Díaz",         risk:"bajo"},
+  {id:"s5",  n:5,  fn:"Raquel",      ln:"Cárdenas Fernández",  risk:"bajo"},
+  {id:"s6",  n:6,  fn:"Alonso",      ln:"Cariaga Saavedra",    risk:"bajo"},
+  {id:"s7",  n:7,  fn:"Ulises",      ln:"Catalán Contreras",   risk:"medio"},
+  {id:"s8",  n:8,  fn:"Pedro",       ln:"Contreras Hernández", risk:"bajo"},
+  {id:"s11", n:11, fn:"Ángela",      ln:"Flores Pastén",       risk:"medio"},
+  {id:"s12", n:12, fn:"Joaquín",     ln:"Flores Rodríguez",    risk:"alto"},
+  {id:"s13", n:13, fn:"Benjamín",    ln:"Guerra Astudillo",    risk:"bajo"},
+  {id:"s14", n:14, fn:"Monserrat",   ln:"Gutiérrez Bernal",    risk:"bajo"},
+  {id:"s15", n:15, fn:"Danae",       ln:"Leyton San Martín",   risk:"medio"},
+  {id:"s16", n:16, fn:"Juan",        ln:"Martínez Otárola",    risk:"alto"},
+  {id:"s17", n:17, fn:"Lucas",       ln:"Matus Pávez",         risk:"alto"},
+  {id:"s18", n:18, fn:"Laura",       ln:"Mena Marchese",       risk:"alto"},
+  {id:"s19", n:19, fn:"Amylee",      ln:"Oliva Irarrázabal",   risk:"bajo"},
+  {id:"s20", n:20, fn:"Yaslyn",      ln:"Opazo Cabrera",       risk:"medio"},
+  {id:"s22", n:22, fn:"Zahira",      ln:"Pérez Valdebenito",   risk:"medio"},
+  {id:"s23", n:23, fn:"Javier",      ln:"Ramírez Riquelme",    risk:"bajo"},
+  {id:"s24", n:24, fn:"Francisco",   ln:"Ramos Carvajal",      risk:"bajo"},
+  {id:"s25", n:25, fn:"Colin",       ln:"Restrepo Castañeda",  risk:"medio"},
+  {id:"s26", n:26, fn:"Vicente",     ln:"San Martín Henríquez",risk:"alto"},
+  {id:"s27", n:27, fn:"Joshua",      ln:"Silva Riveros",       risk:"bajo"},
+  {id:"s28", n:28, fn:"Dylan",       ln:"Soza Osorio",         risk:"bajo"},
+  {id:"s29", n:29, fn:"Martina",     ln:"Torres Rozas",        risk:"medio"}
 ];
 
-let layout = JSON.parse(JSON.stringify(INIT));
-let dragSrc = null;
+/* Layout: 4 double-desks per column (A,B,C) = 24 seats, + individual (D) = 5 seats.
+   Total slots = 29; 26 filled, 3 empty. Distribute by list order. */
+const ROWS = 4;
+const COLS = ["A","B","C"];      // double-desk columns
+const IND  = "D";                // individual column (5 seats)
 
-/* ═══════════════════════ RENDER PLAN ═══════════════════════ */
-function renderPlan() {
-  const root = document.getElementById('classroom-plan');
-  root.innerHTML = '';
-
-  /* Pizarrón / Docente */
-  root.appendChild(buildFrontRow());
-
-  /* Cabeceras columnas */
-  root.appendChild(buildColHeaders());
-
-  /* Filas de puestos */
-  layout.forEach((row, ri) => root.appendChild(buildSeatRow(row, ri)));
-}
-
-function buildFrontRow() {
-  const d = el('front-row');
-  d.appendChild(el('rnum'));
-
-  const piz = el('fbox pizarra');
-  piz.style.cssText = 'flex:4.5;font-size:13px;';
-  piz.textContent = '■  PIZARRÓN';
-  d.appendChild(piz);
-
-  d.appendChild(buildPasillo());
-  d.appendChild(buildPasillo());
-
-  const put = el('fbox puesto');
-  put.style.cssText = 'flex:3.2;font-size:13px;';
-  put.textContent = '◆  PUESTO DOCENTE';
-  d.appendChild(put);
-
-  return d;
-}
-
-function buildColHeaders() {
-  const d = el('col-hdr-row');
-  d.appendChild(el('rnum'));
-
-  d.appendChild(lbl('col-lbl', 'Fila 3'));
-  d.appendChild(buildPasillo('hdr'));
-  d.appendChild(lbl('col-lbl', 'Fila 2'));
-  d.appendChild(buildPasillo('hdr'));
-  d.appendChild(lbl('col-lbl', 'Fila 1'));
-  d.appendChild(buildPasilloAncho('hdr'));
-  d.appendChild(lbl('col-lbl ind', 'Fila Individual'));
-
-  return d;
-}
-
-function buildSeatRow(row, ri) {
-  const d = el('room-row');
-
-  const rn = el('rnum');
-  rn.textContent = ri + 1;
-  d.appendChild(rn);
-
-  d.appendChild(buildMesa([row[0], row[1]], ri, [0, 1]));
-  d.appendChild(buildPasillo());
-  d.appendChild(buildMesa([row[2], row[3]], ri, [2, 3]));
-  d.appendChild(buildPasillo());
-  d.appendChild(buildMesa([row[4], row[5]], ri, [4, 5]));
-  d.appendChild(buildPasilloAncho());
-
-  const ind = el('mesa-ind');
-  ind.appendChild(makeCard(row[6], ri, 6));
-  d.appendChild(ind);
-
-  return d;
-}
-
-function buildMesa(ids, ri, cols) {
-  const b = el('mesa');
-  ids.forEach((id, i) => b.appendChild(makeCard(id, ri, cols[i])));
-  return b;
-}
-
-function makeCard(id, row, col) {
-  const d = document.createElement('div');
-
-  if (!id) {
-    d.className = 'sc empty';
-    d.textContent = 'Libre';
-    addDrop(d, row, col);
-    return d;
+function buildInit(){
+  // slot map: A0t,A0b,A1t,... etc. We store an ordered slot list.
+  const slots = [];
+  for(let r=0;r<ROWS;r++){
+    COLS.forEach(c=>{ slots.push(c+r+"t"); slots.push(c+r+"b"); });
   }
+  for(let r=0;r<5;r++){ slots.push(IND+r); }   // individual: 5 slots
+  const map = {};
+  slots.forEach((s,i)=> map[s] = STUDENTS[i] ? STUDENTS[i].id : null );
+  return {slots, map};
+}
+let INIT = buildInit();
+let layout = JSON.parse(JSON.stringify(INIT.map));
+const byId = Object.fromEntries(STUDENTS.map(s=>[s.id,s]));
 
-  const s = ST[id];
-  d.className = 'sc occ ' + s.nv;
-  d.draggable = true;
-  d.title = s.fn + ' ' + s.ln + '  ·  P1: ' + s.p1;
-
-  let meta = '<span class="sp">' + s.p1 + '</span>';
-  if (s.at > 0) meta += '<span class="ss">⏱ ' + s.at + '</span>';
-  if (s.ng > 0) meta += '<span class="ss">⊖ ' + s.ng + '</span>';
-  if (s.po > 0) meta += '<span class="ss">⊕ ' + s.po + '</span>';
-
-  d.innerHTML =
-    (s.par ? '<div class="par-pin">PAR</div>' : '') +
-    '<div class="sn">' + s.fn + '</div>' +
-    '<div class="sl">' + s.ln + '</div>' +
-    '<div class="sm">' + meta + '</div>';
-
-  d.addEventListener('dragstart', function(e) {
-    dragSrc = {row: row, col: col};
-    setTimeout(function() { d.classList.add('dragging'); }, 0);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', 'x');
-  });
-  d.addEventListener('dragend', function() { d.classList.remove('dragging'); });
-  addDrop(d, row, col);
+/* ════ RENDER ════ */
+function seatEl(studentId, slot){
+  const d = document.createElement("div");
+  if(studentId){
+    const s = byId[studentId];
+    d.className = "seat";
+    d.dataset.risk = s.risk;
+    d.dataset.sid = s.id;
+    d.draggable = true;
+    d.innerHTML = `<span class="num">${s.n}</span>
+      <span class="fn" data-f="fn">${s.fn}</span>
+      <span class="ln" data-f="ln">${s.ln}</span>`;
+    attachDrag(d, slot);
+    attachEdit(d, s.id);
+  } else {
+    d.className = "seat empty";
+    d.dataset.slot = slot;
+    attachDropOnly(d, slot);
+  }
   return d;
 }
 
-function addDrop(el_el, row, col) {
-  el_el.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    el_el.classList.add('drag-over');
+function render(){
+  document.querySelectorAll(".col[data-col]").forEach(col=>{
+    const c = col.dataset.col;
+    col.innerHTML = "";
+    if(c === IND){
+      for(let r=0;r<5;r++){
+        const slot = IND+r;
+        const desk = document.createElement("div");
+        desk.className = "desk single";
+        desk.appendChild(seatEl(layout[slot], slot));
+        col.appendChild(desk);
+      }
+    } else {
+      for(let r=0;r<ROWS;r++){
+        const st = c+r+"t", sb = c+r+"b";
+        const desk = document.createElement("div");
+        desk.className = "desk";
+        desk.appendChild(seatEl(layout[st], st));
+        desk.appendChild(seatEl(layout[sb], sb));
+        col.appendChild(desk);
+      }
+    }
   });
-  el_el.addEventListener('dragleave', function() {
-    el_el.classList.remove('drag-over');
-  });
-  el_el.addEventListener('drop', function(e) {
-    e.preventDefault();
-    el_el.classList.remove('drag-over');
-    if (!dragSrc) return;
-    var sr = dragSrc.row, sc = dragSrc.col;
-    if (sr === row && sc === col) { dragSrc = null; return; }
-    var tmp = layout[row][col];
-    layout[row][col] = layout[sr][sc];
-    layout[sr][sc] = tmp;
-    dragSrc = null;
+}
+
+/* ════ DRAG & DROP (swap) ════ */
+let dragSlot = null;
+function attachDrag(el, slot){
+  el.addEventListener("dragstart", e=>{ dragSlot = slot; e.dataTransfer.effectAllowed="move"; });
+  attachDropTarget(el, slot);
+}
+function attachDropOnly(el, slot){ attachDropTarget(el, slot); }
+function attachDropTarget(el, slot){
+  el.addEventListener("dragover", e=>{ e.preventDefault(); el.classList.add("drag-over"); });
+  el.addEventListener("dragleave", ()=> el.classList.remove("drag-over"));
+  el.addEventListener("drop", e=>{
+    e.preventDefault(); el.classList.remove("drag-over");
+    if(dragSlot === null || dragSlot === slot) return;
+    const tmp = layout[slot];
+    layout[slot] = layout[dragSlot];
+    layout[dragSlot] = tmp;
+    dragSlot = null;
     render();
   });
 }
 
-function buildPasillo(mode) {
-  if (mode === 'hdr') {
-    const d = el('');
-    d.style.cssText = 'flex:0 0 56px;margin:0 5px;';
-    return d;
-  }
-  const d = el('pasillo');
-  d.innerHTML =
-    '<div class="pasillo-line"></div>' +
-    '<div class="pasillo-txt">pasillo</div>' +
-    '<div class="pasillo-line"></div>';
-  return d;
-}
-
-function buildPasilloAncho(mode) {
-  if (mode === 'hdr') {
-    const d = el('');
-    d.style.cssText = 'flex:0 0 76px;margin:0 6px;';
-    return d;
-  }
-  const d = el('pasillo-ancho');
-  d.innerHTML =
-    '<div class="pasillo-line"></div>' +
-    '<div class="pasillo-txt">pasillo</div>' +
-    '<div class="pasillo-line"></div>';
-  return d;
-}
-
-/* ═══════════════════════ RENDER PRINT ═══════════════════════ */
-function renderPrint() {
-  const root = document.getElementById('classroom-print');
-  root.innerHTML = '';
-
-  /* Front */
-  const f = document.createElement('div');
-  f.className = 'p-front';
-  f.style.cssText = 'display:flex;align-items:stretch;margin-bottom:8px;gap:0;';
-  const pn = document.createElement('div');
-  pn.style.cssText = 'flex:0 0 24px;';
-  f.appendChild(pn);
-  const piz = document.createElement('div');
-  piz.className = 'p-piz';
-  piz.style.cssText = 'flex:4.5;';
-  piz.textContent = 'PIZARRÓN';
-  f.appendChild(piz);
-  f.appendChild(printPasillo());
-  f.appendChild(printPasillo());
-  const put = document.createElement('div');
-  put.className = 'p-put';
-  put.style.cssText = 'flex:3.2;';
-  put.textContent = 'PUESTO DOCENTE';
-  f.appendChild(put);
-  root.appendChild(f);
-
-  /* Col headers */
-  const h = document.createElement('div');
-  h.style.cssText = 'display:flex;align-items:stretch;margin-bottom:5px;gap:0;';
-  const hn = document.createElement('div');
-  hn.style.cssText = 'flex:0 0 24px;';
-  h.appendChild(hn);
-  h.appendChild(plbl('p-col-lbl','Fila 3'));
-  h.appendChild(printPasillo());
-  h.appendChild(plbl('p-col-lbl','Fila 2'));
-  h.appendChild(printPasillo());
-  h.appendChild(plbl('p-col-lbl','Fila 1'));
-  h.appendChild(printPasilloAncho());
-  h.appendChild(plbl('p-col-lbl ind','Fila Individual'));
-  root.appendChild(h);
-
-  /* Rows */
-  layout.forEach(function(row, ri) {
-    const d = document.createElement('div');
-    d.className = 'p-room-row';
-
-    const rn = document.createElement('div');
-    rn.className = 'p-rnum';
-    rn.textContent = ri + 1;
-    d.appendChild(rn);
-
-    function pmesa(ids) {
-      const b = document.createElement('div');
-      b.className = 'p-mesa';
-      ids.forEach(function(id) {
-        const s = document.createElement('div');
-        if (id) {
-          s.className = 'pseat';
-          const st = ST[id];
-          s.innerHTML = '<div class="pfn">' + st.fn + '</div><div class="pln">' + st.ln + '</div>';
-        } else {
-          s.className = 'pseat pe';
-        }
-        b.appendChild(s);
-      });
-      return b;
-    }
-
-    d.appendChild(pmesa([row[0],row[1]]));
-    d.appendChild(printPasillo());
-    d.appendChild(pmesa([row[2],row[3]]));
-    d.appendChild(printPasillo());
-    d.appendChild(pmesa([row[4],row[5]]));
-    d.appendChild(printPasilloAncho());
-
-    const ind = document.createElement('div');
-    ind.className = 'p-mesa-ind';
-    const ps = document.createElement('div');
-    if (row[6]) {
-      ps.className = 'pseat';
-      const st = ST[row[6]];
-      ps.innerHTML = '<div class="pfn">' + st.fn + '</div><div class="pln">' + st.ln + '</div>';
-    } else {
-      ps.className = 'pseat pe';
-    }
-    ind.appendChild(ps);
-    d.appendChild(ind);
-    root.appendChild(d);
+/* ════ INLINE EDIT ════ */
+function attachEdit(el, sid){
+  el.querySelectorAll("[data-f]").forEach(span=>{
+    span.addEventListener("dblclick", e=>{
+      e.stopPropagation();
+      span.contentEditable = true; span.focus();
+      const range = document.createRange(); range.selectNodeContents(span);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    });
+    span.addEventListener("blur", ()=>{
+      span.contentEditable = false;
+      byId[sid][span.dataset.f] = span.textContent.trim();
+    });
+    span.addEventListener("keydown", ev=>{
+      if(ev.key==="Enter"){ ev.preventDefault(); span.blur(); }
+    });
   });
 }
 
-function printPasillo() {
-  const d = document.createElement('div');
-  d.className = 'p-pasillo';
-  const l = document.createElement('div');
-  l.className = 'p-pasillo-line';
-  d.appendChild(l);
-  return d;
-}
-function printPasilloAncho() {
-  const d = document.createElement('div');
-  d.className = 'p-pasillo-ancho';
-  const l = document.createElement('div');
-  l.className = 'p-pasillo-line';
-  d.appendChild(l);
-  return d;
-}
-
-/* ═══════════════════════ UTILS ═══════════════════════ */
-function el(cls) {
-  const d = document.createElement('div');
-  if (cls) d.className = cls;
-  return d;
-}
-function lbl(cls, text) {
-  const d = el(cls);
-  d.textContent = text;
-  return d;
-}
-function plbl(cls, text) {
-  const d = document.createElement('div');
-  d.className = cls;
-  d.textContent = text;
-  return d;
-}
-
-function render() { renderPlan(); renderPrint(); }
-
-function resetLayout() {
-  layout = JSON.parse(JSON.stringify(INIT));
+function resetLayout(){
+  STUDENTS.forEach((s,i)=>{ Object.assign(byId[s.id], INIT_NAMES[i]); });
+  layout = JSON.parse(JSON.stringify(INIT.map));
   render();
 }
-
-function switchTab(id, btn) {
-  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
-  document.querySelectorAll('.tb').forEach(function(b) { b.classList.remove('on'); });
-  document.getElementById('tab-' + id).classList.add('on');
-  btn.classList.add('on');
-  render();
-}
+const INIT_NAMES = STUDENTS.map(s=>({fn:s.fn, ln:s.ln}));
 
 render();
 </script>
